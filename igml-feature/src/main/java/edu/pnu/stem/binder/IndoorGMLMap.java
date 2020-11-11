@@ -225,7 +225,7 @@ public class IndoorGMLMap implements Serializable {
 			try {
 				resultDoc = edu.pnu.stem.binder.Convert2JaxbClass.change2JaxbClass(this, features);
 				System.out.println(resultDoc.getId());
-				Mashaller.marshalIndoorFeatures(path, resultDoc);
+				Marshaller.marshalIndoorFeatures(path, resultDoc);
 			} catch (JAXBException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

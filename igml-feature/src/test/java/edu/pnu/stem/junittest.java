@@ -5,12 +5,11 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.xml.bind.JAXBException;
-
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import edu.pnu.stem.binder.UnMarshaller;
 import edu.pnu.stem.binder.IndoorGMLMap;
 import edu.pnu.stem.feature.core.CellSpace;
 import edu.pnu.stem.feature.core.Edges;
@@ -33,7 +32,7 @@ public class junittest {
      public static void InitXMLtoJava() {
         try {         
             map.setDocId("test");        
-            doc = edu.pnu.stem.binder.Unmashaller.importIndoorGML("test","src/test/resources/example1.gml");
+            doc = UnMarshaller.importIndoorGML("test","src/test/resources/example1.gml");
             testObject = edu.pnu.stem.binder.Convert2FeatureClass.change2FeatureClass(map,"test", doc);
         } catch (Exception e) {
                 // TODO Auto-generated catch block

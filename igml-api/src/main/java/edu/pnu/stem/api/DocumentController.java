@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.pnu.stem.api.exception.DocumentNotFoundException;
 import edu.pnu.stem.api.exception.UndefinedDocumentException;
 import edu.pnu.stem.binder.IndoorGMLMap;
-import edu.pnu.stem.binder.Unmashaller;
+import edu.pnu.stem.binder.UnMarshaller;
 import edu.pnu.stem.feature.core.IndoorFeatures;
 import net.opengis.indoorgml.core.v_1_0.IndoorFeaturesType;
 
@@ -58,7 +58,7 @@ public class DocumentController {
 				// Importing IndoorGML Document
 				try {
 					InputStream xml 		= request.getInputStream();
-					IndoorFeaturesType doc 	= Unmashaller.importIndoorGML(id, xml);
+					IndoorFeaturesType doc 	= UnMarshaller.importIndoorGML(id, xml);
 					IndoorFeatures savedDoc = edu.pnu.stem.binder.Convert2FeatureClass.change2FeatureClass(map, id, doc);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
