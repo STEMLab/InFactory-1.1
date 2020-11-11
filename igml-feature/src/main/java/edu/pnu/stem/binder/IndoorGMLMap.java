@@ -1,14 +1,10 @@
 package edu.pnu.stem.binder;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
-
 import javax.xml.bind.JAXBException;
-
 import org.locationtech.jts.geom.Geometry;
-
 import edu.pnu.stem.feature.core.IndoorFeatures;
 import edu.pnu.stem.util.GeometryUtil;
 import net.opengis.indoorgml.core.v_1_0.IndoorFeaturesType;
@@ -18,40 +14,38 @@ public class IndoorGMLMap implements Serializable {
 	private String docId;
 	
 	public IndoorGMLMap() {
-		this.collection = new ConcurrentHashMap<String, ConcurrentHashMap<String, Object>>();
+		this.collection = new ConcurrentHashMap<>();
 		setFeatureClassContainer();
 	}
 
 	private void setFeatureClassContainer() {
-		
-		collection.put("ID", new ConcurrentHashMap<String,Object>());
-		collection.put("FutureID", new ConcurrentHashMap<String,Object>());
-		collection.put("IndoorFeatures", new ConcurrentHashMap<String,Object>());
-		collection.put("MultiLayeredGraph", new ConcurrentHashMap<String,Object>());
-		collection.put("PrimalSpaceFeatures", new ConcurrentHashMap<String,Object>());
-		collection.put("CellSpace", new ConcurrentHashMap<String,Object>());
-		collection.put("CellSpaceBoundary", new ConcurrentHashMap<String,Object>());
-		collection.put("SpaceLayers", new ConcurrentHashMap<String,Object>());
-		collection.put("SpaceLayer", new ConcurrentHashMap<String,Object>());
-		collection.put("Nodes", new ConcurrentHashMap<String,Object>());
-		collection.put("Edges", new ConcurrentHashMap<String,Object>());
-		collection.put("Transition", new ConcurrentHashMap<String,Object>());
-		collection.put("InterLayerConnection", new ConcurrentHashMap<String,Object>());
-		collection.put("InterEdges", new ConcurrentHashMap<String,Object>());
-		collection.put("CellSpaceGeometry", new ConcurrentHashMap<String,Object>());
-		collection.put("State", new ConcurrentHashMap<String,Object>());
-		collection.put("Reference", new ConcurrentHashMap<String,Object>());
-		collection.put("Envelope", new ConcurrentHashMap<String,Object>());
-		collection.put("Geometry", new ConcurrentHashMap<String,Object>());		
-		
-		collection.put("GeneralSpace", new ConcurrentHashMap<String,Object>());
-		collection.put("TransitionSpace", new ConcurrentHashMap<String,Object>());
-		collection.put("ConnectionSpace", new ConcurrentHashMap<String,Object>());
-		collection.put("AnchorSpace", new ConcurrentHashMap<String,Object>());
-		
-		collection.put("ConnectionBoundary", new ConcurrentHashMap<String,Object>());
-		collection.put("AnchorBoundary", new ConcurrentHashMap<String,Object>());
-
+		collection.put("ID", new ConcurrentHashMap<>());
+		collection.put("FutureID", new ConcurrentHashMap<>());
+		// IndoorGML Core Module
+		collection.put("IndoorFeatures", new ConcurrentHashMap<>());
+		collection.put("MultiLayeredGraph", new ConcurrentHashMap<>());
+		collection.put("PrimalSpaceFeatures", new ConcurrentHashMap<>());
+		collection.put("CellSpace", new ConcurrentHashMap<>());
+		collection.put("CellSpaceBoundary", new ConcurrentHashMap<>());
+		collection.put("SpaceLayers", new ConcurrentHashMap<>());
+		collection.put("SpaceLayer", new ConcurrentHashMap<>());
+		collection.put("Nodes", new ConcurrentHashMap<>());
+		collection.put("Edges", new ConcurrentHashMap<>());
+		collection.put("Transition", new ConcurrentHashMap<>());
+		collection.put("InterLayerConnection", new ConcurrentHashMap<>());
+		collection.put("InterEdges", new ConcurrentHashMap<>());
+		collection.put("CellSpaceGeometry", new ConcurrentHashMap<>());
+		collection.put("State", new ConcurrentHashMap<>());
+		collection.put("Reference", new ConcurrentHashMap<>());
+		collection.put("Envelope", new ConcurrentHashMap<>());
+		collection.put("Geometry", new ConcurrentHashMap<>());
+		// IndoorGML Navi Module
+		collection.put("GeneralSpace", new ConcurrentHashMap<>());
+		collection.put("TransitionSpace", new ConcurrentHashMap<>());
+		collection.put("ConnectionSpace", new ConcurrentHashMap<>());
+		collection.put("AnchorSpace", new ConcurrentHashMap<>());
+		collection.put("ConnectionBoundary", new ConcurrentHashMap<>());
+		collection.put("AnchorBoundary", new ConcurrentHashMap<>());
 	}
 	
 	public void clearMap() {
@@ -60,19 +54,23 @@ public class IndoorGMLMap implements Serializable {
 
 	public boolean hasID(String id) {
 		boolean flag = false;
+
 		ConcurrentHashMap<String, Object> idContainer = getFeatureContainer("ID");
 		if (idContainer.containsKey(id)) {
 			flag = true;
 		}
+
 		return flag;
 	}
 	
 	public boolean hasFutureID(String id){
 		boolean flag = false;
+
 		ConcurrentHashMap<String, Object> idContainer = getFeatureContainer("FutureID");
 		if (idContainer.containsKey(id)) {
 			flag = true;
 		}
+
 		return flag;
 	}
 	
@@ -96,15 +94,14 @@ public class IndoorGMLMap implements Serializable {
 	
 	public void removeFeature(String id) {
 		if(hasID(id)) {
-			String featurename = (String)collection.get("ID").get(id);
-			collection.get(featurename).remove(id);
+			String featureName = (String)collection.get("ID").get(id);
+			collection.get(featureName).remove(id);
 			removeID(id);
 		}
 	}
 	
 	public void removeFutureID(String id){
 		getFeatureContainer("FutureID").remove(id);
-		//System.out.println("Remove Future ID : "+id);
 	}
 	
 	private void removeID(String id){
@@ -113,8 +110,7 @@ public class IndoorGMLMap implements Serializable {
 	
 	public String getFeatureNameFromID(String id) {
 		ConcurrentHashMap<String, Object> idContainer = getFeatureContainer("id");
-		String featureName = (String) idContainer.get(id);
-		return featureName;
+		return (String) idContainer.get(id);
 	}
 	
 	public ConcurrentHashMap<String, Object> getFeatureContainer(String featureName) {
@@ -126,33 +122,30 @@ public class IndoorGMLMap implements Serializable {
 
 		return newFeatureContainer;
 	}
-
-	/*
-	public static Object getFeature(String id) {
-		return Container.getInstance().getFeature(docId, id);
-	}
-	*/
 	
 	public Object getFeature(String id){
 		Object newFeature = null;
+
 		if(hasID(id)){
 			String typeName = (String) getFeatureContainer("ID").get(id);
 			newFeature = collection.get(typeName).get(id);
 		} else {
-			//TODO
-			//Excpetion
+			//TODO Exception
 		}
+
 		return newFeature;
 	}
 	
 	public Object getFutureFeature(String id){
 		Object newFeature = null;
+
 		if(hasFutureID(id)){
 			newFeature = getFeatureContainer("FutureID").get(id);
 		}
 		else{
 			//TODO : Exception
 		}
+
 		return newFeature;
 	}
 	
@@ -161,24 +154,25 @@ public class IndoorGMLMap implements Serializable {
 	public Geometry getFeature4Geometry(String id){
 		ConcurrentHashMap<String,Object> geomContainer = collection.get("Geometry");
 		Geometry geom = null;
+
 		if(geomContainer.containsKey(id)){
 			geom = (Geometry)geomContainer.get(id);
 		}
 		else{
-			//TODO
-			//Excpetion
+			//TODO Exception
 		}
+
 		return geom;
 	}
 	public void setFeature4Geometry(String id, Geometry geom){
 		GeometryUtil.setMetadata(geom, "id", id);
 		ConcurrentHashMap<String,Object> geomContainer = collection.get("Geometry");
+
 		if(!geomContainer.containsKey(id)){
 			geomContainer.put(id, geom);
 		}
 		else{
-			//TODO
-			//Excpetion
+			//TODO Exception
 		}
 	}
 	
@@ -198,7 +192,6 @@ public class IndoorGMLMap implements Serializable {
 		}
 	}
 	
-	
 	public void setReference(String id){
 		if(hasID(id)){
 			ConcurrentHashMap<String, Object> referenceContainer = getFeatureContainer("Reference");
@@ -217,41 +210,28 @@ public class IndoorGMLMap implements Serializable {
 	public void setDocId(String id) {
 		this.docId = id;		
 	}
+
 	public String getDocId(){
-		return new String(this.docId);
+		return this.docId;
 	}
 	
 	public void Marshall(String path) {
-		
-		
 		Enumeration<Object> fe = collection.get("IndoorFeatures").elements();
-		IndoorFeatures features = null;
-		//Object obj= null;
+		IndoorFeatures features;
 		if(fe.hasMoreElements()) {
-			//obj = fe.nextElement();
-			//System.out.println(obj.getClass());
-			
-			
-			features = (IndoorFeatures) fe.nextElement();		
-			
+			features = (IndoorFeatures) fe.nextElement();
+
 			IndoorFeaturesType resultDoc;
 			try {
 				resultDoc = edu.pnu.stem.binder.Convert2JaxbClass.change2JaxbClass(this, features);
 				System.out.println(resultDoc.getId());
-				
 				Mashaller.marshalIndoorFeatures(path, resultDoc);
-				
 			} catch (JAXBException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else {
-			//TODO
-			//Exception
+			//TODO Exception
 		}
 	}
-
 }

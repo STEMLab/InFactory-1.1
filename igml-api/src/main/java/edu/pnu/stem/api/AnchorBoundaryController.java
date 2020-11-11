@@ -8,8 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.locationtech.jts.geom.Geometry;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,24 +33,20 @@ import edu.pnu.stem.feature.core.CellSpaceBoundary;
 
 @RestController
 @RequestMapping("documents/{docId}/anchorboundary")
-public class AnchorBoundaryContoller {
-
-	@Autowired
-	private ApplicationContext applicationContext;
+public class AnchorBoundaryController {
 
 	@PostMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createAnchorBoundary(@PathVariable("docId") String docId, @PathVariable("id") String id,@RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
-		
+	public void createAnchorBoundary(@PathVariable("docId") String docId, @PathVariable("id") String id,
+									 @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
 		final ObjectMapper mapper = new ObjectMapper();
-		String parentId = json.get("parentId").asText().trim();
-		String duality = null;
-		String name = null;
-		String description = null;
-
-		String geomFormatType = "GEOJSON";
-		String geom = json.get("geometry").asText().trim();
-		Geometry geometry = null;
+		String parentId 		= json.get("parentId").asText().trim();
+		String duality 			= null;
+		String name 			= null;
+		String description 		= null;
+		String geomFormatType 	= "GEOJSON";
+		String geom 			= json.get("geometry").asText().trim();
+		Geometry geometry 		= null;
 
 		if (id == null || id.isEmpty()) {
 			id = UUID.randomUUID().toString();
@@ -68,7 +63,7 @@ public class AnchorBoundaryContoller {
 			geometry = Convert2Json.json2Geometry(json.get("geometry"));
 		}
 
-		// TODO : 나중에 고칠 것. 임시로.
+		// TODO
 		if (json.has("duality")) {
 			duality = json.get("duality").asText().trim();
 		}
@@ -84,21 +79,18 @@ public class AnchorBoundaryContoller {
 			}
 		}
 
-		CellSpaceBoundary c = null;
+		CellSpaceBoundary c;
 		try {
-			Container container = applicationContext.getBean(Container.class);
-			IndoorGMLMap map = container.getDocument(docId);
+			IndoorGMLMap map = Container.getDocument(docId);
 			/*
-			 * 
-			 * if(geomFormatType.equals("GEOJSON")){ c =
-			 * CellSpaceBoundaryDAO.createCellSpaceBoundary(map, parentId, id, geometry,
-			 * duality); } else if(geomFormatType.equals("WKT")){ c =
-			 * CellSpaceBoundaryDAO.createCellSpaceBoundary(map, parentId, id, geom,
-			 * duality); }
-			 */
-
+			if(geomFormatType.equals("GEOJSON")){
+				c = CellSpaceBoundaryDAO.createCellSpaceBoundary(map, parentId, id, geometry, duality);
+			}
+			else if(geomFormatType.equals("WKT")){
+				c = CellSpaceBoundaryDAO.createCellSpaceBoundary(map, parentId, id, geom, duality);
+			}
+			*/
 			c = AnchorBoundaryDAO.createAnchorBoundary(map, parentId, id, name, description, geometry, duality);
-
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 			throw new UndefinedDocumentException();
@@ -109,46 +101,37 @@ public class AnchorBoundaryContoller {
 	@PutMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	public void updateAnchorBoundary(@PathVariable("docId") String docId, @PathVariable("id") String id,
-			@RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
+									 @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			Container container = applicationContext.getBean(Container.class);
-			IndoorGMLMap map = container.getDocument(docId);
-			String duality = null;
-			JsonNode geometry = null;
-			Geometry geom = null;
-			String parentId = null;
-			String name = null;
-			String description = null;
+			IndoorGMLMap map 	= Container.getDocument(docId);
+			String duality 		= null;
+			JsonNode geometry 	= null;
+			Geometry geom 		= null;
+			String parentId 	= null;
+			String name 		= null;
+			String description 	= null;
 
 			if (json.has("parentId")) {
 				parentId = json.get("parentId").asText().trim();
 			}
 
 			if (json.has("duality")) {
-
 				duality = json.get("duality").asText().trim();
-
 			}
 			if (json.has("properties")) {
 				if (json.get("properties").has("duality")) {
 					duality = json.get("properties").get("duality").asText().trim();
-
 				}
-
-			}
-			if (json.has("geometry")) {
-				geometry = json.get("geometry");
-				geom = Convert2Json.json2Geometry(geometry);
-
-			}
-
-			if (json.has("properties")) {
 				if (json.get("properties").has("name")) {
 					name = json.get("properties").get("name").asText().trim();
 				}
 				if (json.get("properties").has("description")) {
 					description = json.get("properties").get("description").asText().trim();
 				}
+			}
+			if (json.has("geometry")) {
+				geometry = json.get("geometry");
+				geom = Convert2Json.json2Geometry(geometry);
 			}
 
 			CellSpaceBoundaryDAO.updateCellSpaceBoundary(map, parentId, id, name, description, geom, duality);
@@ -161,17 +144,15 @@ public class AnchorBoundaryContoller {
 	@GetMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.FOUND)
 	public void getAnchorBoundary(@PathVariable("docId") String docId, @PathVariable("id") String id,
-			HttpServletRequest request, HttpServletResponse response) throws IOException {
+								  HttpServletRequest request, HttpServletResponse response) throws IOException {
 		try {
-			Container container = applicationContext.getBean(Container.class);
-			IndoorGMLMap map = container.getDocument(docId);
-
+			IndoorGMLMap map = Container.getDocument(docId);
 			ObjectNode target = Convert2Json.convert2JSON(map, AnchorBoundaryDAO.readAnchorBoundary(map, id));
+
 			response.setContentType("application/json;charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.print(target);
 			out.flush();
-
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 			throw new UndefinedDocumentException();
@@ -181,15 +162,14 @@ public class AnchorBoundaryContoller {
 	@DeleteMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteAnchorBoundary(@PathVariable("docId") String docId, @PathVariable("id") String id,
-			@RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
+									 @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			Container container = applicationContext.getBean(Container.class);
-			IndoorGMLMap map = container.getDocument(docId);
+			IndoorGMLMap map = Container.getDocument(docId);
+			assert map != null;
 			CellSpaceBoundaryDAO.deleteCellSpaceBoundary(map, id);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 			throw new UndefinedDocumentException();
 		}
 	}
-
 }

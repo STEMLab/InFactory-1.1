@@ -6,10 +6,8 @@ import java.util.List;
 import java.util.UUID;
 
 import edu.pnu.stem.binder.IndoorGMLMap;
-import edu.pnu.stem.feature.core.CellSpace;
 import edu.pnu.stem.feature.core.Edges;
 import edu.pnu.stem.feature.core.SpaceLayer;
-import edu.pnu.stem.feature.core.State;
 import edu.pnu.stem.feature.core.Transition;
 
 
@@ -31,7 +29,7 @@ public class EdgesDAO {
 		
 		List<Transition> tm = newFeature.getTransitionMember();
 		if(tm == null)
-			tm = new ArrayList<Transition>();
+			tm = new ArrayList<>();
 		
 		SpaceLayer parent = (SpaceLayer) map.getFeature(parentId);
 		if(parent == null){
@@ -60,7 +58,7 @@ public class EdgesDAO {
 		}
 		List<Edges>edges = parent.getEdges();
 		if(edges == null)
-			edges = new ArrayList<Edges>();
+			edges = new ArrayList<>();
 		
 		edges.add(newFeature);
 		
@@ -109,21 +107,17 @@ public class EdgesDAO {
 		
 		if(transitionMember != null) {
 			List<Transition> oldChild = target.getTransitionMember();
-			List<Transition> newChild = new ArrayList<Transition>();
+			List<Transition> newChild = new ArrayList<>();
 			
 			for(String si : transitionMember) {
 				newChild.add(new Transition(map, si));
 			}
 			
 			if(oldChild != null) {
-				for(Transition s : oldChild) {
-					if(!newChild.contains(s)) {
-						oldChild.remove(s);
-					}
-				}
+				oldChild.removeIf(s -> !newChild.contains(s));
 			}
 			else
-				oldChild = new ArrayList<Transition>();
+				oldChild = new ArrayList<>();
 			
 						
 			for(Transition s : newChild) {
@@ -131,10 +125,8 @@ public class EdgesDAO {
 					oldChild.add(s);
 				}
 			}
-						
-			for(Transition s : oldChild) {
-				result.setTransitionMembers(oldChild);
-			}
+
+			result.setTransitionMembers(oldChild);
 			
 		}
 		else {

@@ -42,15 +42,13 @@ import edu.pnu.stem.feature.core.Edges;
 @RequestMapping("documents/{docId}/edges")
 public class EdgesController {
 	
-	@Autowired
-    private ApplicationContext applicationContext;
-	
 	@PostMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createEdges(@PathVariable("docId") String docId, @PathVariable("id") String id, @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
-		String parentId = json.get("parentId").asText().trim();
-		String name = null;
-		String description = null;
+	public void createEdges(@PathVariable("docId") String docId, @PathVariable("id") String id,
+							@RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
+		String parentId 	= json.get("parentId").asText().trim();
+		String name 		= null;
+		String description 	= null;
 		List<String> transitionMember = null;
 		
 		if(id == null || id.isEmpty()) {
@@ -65,7 +63,7 @@ public class EdgesController {
 				description = json.get("properties").get("description").asText().trim();
 			}
 			if(json.get("properties").has("transitionMember")){
-				transitionMember = new ArrayList<String>();
+				transitionMember = new ArrayList<>();
 				JsonNode partialBoundedByList = json.get("properties").get("transitionMember");
 				for(int i = 0 ; i < partialBoundedByList.size() ; i++){
 					transitionMember.add(partialBoundedByList.get(i).asText().trim());
@@ -75,8 +73,7 @@ public class EdgesController {
 		
 		Edges es;
 		try {
-			Container container = applicationContext.getBean(Container.class);
-			IndoorGMLMap map = container.getDocument(docId);
+			IndoorGMLMap map = Container.getDocument(docId);
 			es = EdgesDAO.createEdges(map, parentId, id, name, description, transitionMember);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
@@ -88,20 +85,18 @@ public class EdgesController {
 
 	@PutMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.ACCEPTED)
-	public void updateEdges(@PathVariable("docId") String docId, @PathVariable("id") String id, @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
+	public void updateEdges(@PathVariable("docId") String docId, @PathVariable("id") String id,
+							@RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			Container container = applicationContext.getBean(Container.class);
-			IndoorGMLMap map = container.getDocument(docId);
-
-			String parentId = null;
-			String name = null;
-			String description = null;
+			IndoorGMLMap map 	= Container.getDocument(docId);
+			String parentId 	= null;
+			String name 		= null;
+			String description 	= null;
 			List<String> transitionMember = null;
 			
 			if(json.has("parentId")) {
 				parentId = json.get("parentId").asText().trim();
 			}
-						
 			if(json.has("properties")){
 				if(json.get("properties").has("name")) {
 					name = json.get("properties").get("name").asText().trim();
@@ -110,7 +105,7 @@ public class EdgesController {
 					description = json.get("properties").get("description").asText().trim();
 				}
 				if(json.get("properties").has("transitionMember")){
-					transitionMember = new ArrayList<String>();
+					transitionMember = new ArrayList<>();
 					JsonNode partialBoundedByList = json.get("properties").get("transitionMember");
 					for(int i = 0 ; i < partialBoundedByList.size() ; i++){
 						transitionMember.add(partialBoundedByList.get(i).asText().trim());
@@ -118,25 +113,24 @@ public class EdgesController {
 				}
 				
 			}
-						
-			//NodesDAO.updateNodes(map, parentId, id, name, description, stateMember);
+
 			EdgesDAO.updateEdges(map, parentId, id, name, description, transitionMember);
 		}
 		catch(NullPointerException e) {
 			e.printStackTrace();
 			throw new UndefinedDocumentException();
 		}
-
 	}
 	
 	@GetMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.FOUND)
-	public void getEdges(@PathVariable("docId") String docId,@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void getEdges(@PathVariable("docId") String docId,@PathVariable("id") String id,
+						 HttpServletRequest request, HttpServletResponse response) throws IOException {
 		try {
-			Container container = applicationContext.getBean(Container.class);
-			IndoorGMLMap map = container.getDocument(docId);
-			
+			IndoorGMLMap map = Container.getDocument(docId);
+			assert map != null;
 			ObjectNode target = Convert2Json.convert2JSON(map, EdgesDAO.readEdges(map, id));
+
 			response.setContentType("application/json;charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.print(target);
@@ -150,10 +144,11 @@ public class EdgesController {
 	
 	@DeleteMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteEdges(@PathVariable("docId") String docId,@PathVariable("id") String id, @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
+	public void deleteEdges(@PathVariable("docId") String docId,@PathVariable("id") String id,
+							@RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			Container container = applicationContext.getBean(Container.class);
-			IndoorGMLMap map = container.getDocument(docId);			
+			IndoorGMLMap map = Container.getDocument(docId);
+			assert map != null;
 			EdgesDAO.deleteEdges(map, id);
 		}
 		catch(NullPointerException e) {
@@ -161,6 +156,4 @@ public class EdgesController {
 			throw new UndefinedDocumentException();
 		}
 	}
-	
-	
 }

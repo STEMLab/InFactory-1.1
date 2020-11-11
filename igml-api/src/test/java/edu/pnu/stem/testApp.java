@@ -11,18 +11,15 @@ import junit.framework.TestCase;
 import net.opengis.indoorgml.core.v_1_0.IndoorFeaturesType;
 
 public class testApp extends TestCase {
- public void testConverter(){
-	 try {
-		IndoorGMLMap map = Container.createDocument("test");
-		IndoorFeaturesType doc = Unmashaller.importIndoorGML("test","src/test/resources/FJK_1_0_3.gml");
-		IndoorFeatures savedDoc = edu.pnu.stem.binder.Convert2FeatureClass.change2FeatureClass(map,"test", doc);		
-		edu.pnu.stem.binder.Mashaller.marshalIndoorFeatures(null, Convert2JaxbClass.change2JaxbClass(map,savedDoc));
-	} catch (JAXBException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+	public void testConverter(){
+		try {
+			IndoorGMLMap map = Container.createDocument("test");
+			IndoorFeaturesType doc = Unmashaller.importIndoorGML("test","src/test/resources/FJK_1_0_3.gml");
+			IndoorFeatures savedDoc = edu.pnu.stem.binder.Convert2FeatureClass.change2FeatureClass(map,"test", doc);
+			edu.pnu.stem.binder.Mashaller.marshalIndoorFeatures(null, Convert2JaxbClass.change2JaxbClass(map,savedDoc));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
- }
 }

@@ -1,17 +1,5 @@
-/**
- * 
- */
 package edu.pnu.stem.api.config;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
-import javax.sql.DataSource;
-
-import org.h2.server.web.WebServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**

@@ -1,58 +1,49 @@
 package edu.pnu.stem.binder;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Properties;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.swing.JFileChooser;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.PropertyException;
-
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
-
 import edu.pnu.stem.feature.core.IndoorFeatures;
 import net.opengis.indoorgml.core.v_1_0.IndoorFeaturesType;
 import net.opengis.indoorgml.core.v_1_0.ObjectFactory;
 import net.opengis.indoorgml.navigation.v_1_0.RouteType;
 
+import javax.swing.*;
+import javax.xml.bind.*;
+import java.io.File;
+import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class Mashaller {
 
-	public static void exportIndoorGMLCore(Properties props, String id, String filePath) throws Exception {
+	public static void exportIndoorGMLCore(Properties props, String id, String filePath) {
 		// IndoorFeaturesType indoorFeaturesType =
 		// Convert2JaxbClass.change2JaxbClass((IndoorFeatures)Convert2FeatureClass.docContainer.getFeature(id));
 		// marshalIndoorFeatures(filePath, indoorFeaturesType);
 	}
 
-	public static void marshalDocument(String path, IndoorGMLMap map) throws JAXBException, IOException {
-		ConcurrentHashMap<String, Object> indoorfeatures = map.getFeatureContainer("IndoorFeatures");
-		String indoorfeaturesId = null;
-		for (ConcurrentHashMap.Entry<String, Object> entry : indoorfeatures.entrySet()) {
-			indoorfeaturesId = entry.getKey();
+	public static void marshalDocument(String path, IndoorGMLMap map) throws JAXBException {
+		ConcurrentHashMap<String, Object> indoorFeatures = map.getFeatureContainer("IndoorFeatures");
+		String indoorFeaturesId = null;
+		for (ConcurrentHashMap.Entry<String, Object> entry : indoorFeatures.entrySet()) {
+			indoorFeaturesId = entry.getKey();
 		}
-		marshalIndoorFeatures(path,
-				Convert2JaxbClass.change2JaxbClass(map, (IndoorFeatures) map.getFeature(indoorfeaturesId)));
+		marshalIndoorFeatures(path, Convert2JaxbClass.change2JaxbClass(map, (IndoorFeatures) map.getFeature(indoorFeaturesId)));
 	}
 
 	private void marshalRoute(String path, RouteType routeType) throws JAXBException {
-
 		JAXBContext context;
 		Marshaller marshaller;
 
-		context = JAXBContext.newInstance("net.opengis.indoorgml.core.v_1_0" + ":net.opengis.indoorgml.navigation.v_1_0"
-				+ ":net.opengis.gml.v_3_2_1");
+		context = JAXBContext.newInstance("net.opengis.indoorgml.core.v_1_0:" +
+				"net.opengis.indoorgml.navigation.v_1_0:" +
+				"net.opengis.gml.v_3_2_1");
 
-		File output = null;
+		File output;
 
 		if (path == null) {
 			JFileChooser save = new JFileChooser();
 			int result = save.showSaveDialog(null);
-			if (result == JFileChooser.CANCEL_OPTION) {
+			if (result == JFileChooser.CANCEL_OPTION)
 				System.exit(1);
-			}
 			output = save.getSelectedFile();
 		} else {
 			output = new File(path);
@@ -76,23 +67,21 @@ public class Mashaller {
 		marshaller.marshal(jRoute, output);
 	}
 
-	public static void marshalIndoorFeatures(String path, IndoorFeaturesType indoorFeaturesType)
-			throws JAXBException, IOException {
-
+	public static void marshalIndoorFeatures(String path, IndoorFeaturesType indoorFeaturesType) throws JAXBException {
 		JAXBContext context;
 		Marshaller marshaller;
 
-		context = JAXBContext.newInstance("net.opengis.indoorgml.core.v_1_0" + ":net.opengis.indoorgml.navigation.v_1_0"
-				+ ":net.opengis.gml.v_3_2_1");
+		context = JAXBContext.newInstance("net.opengis.indoorgml.core.v_1_0:" +
+						"net.opengis.indoorgml.navigation.v_1_0:" +
+						"net.opengis.gml.v_3_2_1");
 
-		File output = null;
+		File output;
 
 		if (path == null) {
 			JFileChooser save = new JFileChooser();
 			int result = save.showSaveDialog(null);
-			if (result == JFileChooser.CANCEL_OPTION) {
+			if (result == JFileChooser.CANCEL_OPTION)
 				System.exit(1);
-			}
 			output = save.getSelectedFile();
 		} else {
 			output = new File(path);
@@ -119,13 +108,10 @@ public class Mashaller {
 	public static class IndoorGMLNameSpaceMapper extends NamespacePrefixMapper {
 		private static final String DEFAULT_PREFIX = "core";
 		private static final String DEFAULT_URI = "http://www.opengis.net/indoorgml/1.0/core";
-
 		private static final String NAVIGATION_PREFIX = "navi";
 		private static final String NAVIGATION_URI = "http://www.opengis.net/indoorgml/1.0/navigation";
-
 		private static final String GML_PREFIX = "gml";
 		private static final String GML_URI = "http://www.opengis.net/gml/3.2";
-
 		private static final String XLINK_PREFIX = "xlink";
 		private static final String XLINK_URI = "http://www.w3.org/1999/xlink";
 

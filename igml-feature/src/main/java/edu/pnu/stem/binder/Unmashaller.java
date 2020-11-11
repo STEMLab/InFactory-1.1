@@ -1,7 +1,6 @@
 package edu.pnu.stem.binder;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 
 import javax.xml.bind.JAXBContext;
@@ -16,11 +15,9 @@ import net.opengis.indoorgml.navigation.v_1_0.RouteType;
 
 
 public class Unmashaller {
-
 	private static XLinkSymbolMap mXLinkSymbolMap;
 
 	public static IndoorFeaturesType importIndoorGML(String id, String filePath) throws Exception {
-
 		if (id == null || id == "") {
 			throw new IllegalArgumentException(id);
 		}
@@ -37,7 +34,6 @@ public class Unmashaller {
 	}
 	
 	public static IndoorFeaturesType importIndoorGML(String id, InputStream stream) throws Exception {
-
 		if (id == null || id == "") {
 			throw new IllegalArgumentException(id);
 		}
@@ -53,49 +49,42 @@ public class Unmashaller {
 		return indoorFeatureType;
 	}
 
-	public static Object unmarshalIndoorGML(String path) throws JAXBException, IOException {
-
+	public static Object unmarshalIndoorGML(String path) throws JAXBException {
 		JAXBContext context;
 		Unmarshaller unmarshaller;
 		SymbolListener listener;
 
-		context = JAXBContext.newInstance(
-				"net.opengis.indoorgml.core.v_1_0:net.opengis.indoorgml.navigation.v_1_0:net.opengis.gml.v_3_2_1");
+		context = JAXBContext.newInstance("net.opengis.indoorgml.core.v_1_0:" +
+						"net.opengis.indoorgml.navigation.v_1_0:" +
+						"net.opengis.gml.v_3_2_1");
 
 		unmarshaller = context.createUnmarshaller();
-		listener = new SymbolListener(AbstractGMLType.class);
-
+		listener	 = new SymbolListener(AbstractGMLType.class);
 		unmarshaller.setListener(listener);
-
 		unmarshaller.setEventHandler(new DefaultValidationEventHandler());
 
 		File input = new File(path);
 		Object unmarshalResult = JAXBIntrospector.getValue(unmarshaller.unmarshal(input));
-
-		mXLinkSymbolMap = listener.getSymbolMap();
+		mXLinkSymbolMap 	   = listener.getSymbolMap();
 
 		return unmarshalResult;
 	}
 	
-	public static Object unmarshalIndoorGML(InputStream stream) throws JAXBException, IOException {
-
+	public static Object unmarshalIndoorGML(InputStream stream) throws JAXBException {
 		JAXBContext context;
 		Unmarshaller unmarshaller;
 		SymbolListener listener;
 
-		context = JAXBContext.newInstance(
-				"net.opengis.indoorgml.core.v_1_0:net.opengis.indoorgml.navigation.v_1_0:net.opengis.gml.v_3_2_1");
+		context = JAXBContext.newInstance("net.opengis.indoorgml.core.v_1_0:" +
+				"net.opengis.indoorgml.navigation.v_1_0:" +
+				"net.opengis.gml.v_3_2_1");
 
 		unmarshaller = context.createUnmarshaller();
-		listener = new SymbolListener(AbstractGMLType.class);
-
+		listener 	 = new SymbolListener(AbstractGMLType.class);
 		unmarshaller.setListener(listener);
-
 		unmarshaller.setEventHandler(new DefaultValidationEventHandler());
-
 		Object unmarshalResult = JAXBIntrospector.getValue(unmarshaller.unmarshal(stream));
-
-		mXLinkSymbolMap = listener.getSymbolMap();
+		mXLinkSymbolMap 	   = listener.getSymbolMap();
 
 		return unmarshalResult;
 	}

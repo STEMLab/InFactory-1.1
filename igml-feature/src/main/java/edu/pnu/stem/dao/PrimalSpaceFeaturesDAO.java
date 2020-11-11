@@ -9,9 +9,7 @@ import edu.pnu.stem.binder.IndoorGMLMap;
 import edu.pnu.stem.feature.core.CellSpace;
 import edu.pnu.stem.feature.core.CellSpaceBoundary;
 import edu.pnu.stem.feature.core.IndoorFeatures;
-import edu.pnu.stem.feature.core.InterEdges;
 import edu.pnu.stem.feature.core.PrimalSpaceFeatures;
-import edu.pnu.stem.feature.core.SpaceLayers;
 
 /**
  * 
@@ -36,11 +34,11 @@ public class PrimalSpaceFeaturesDAO {
 		
 		List<CellSpace>cm = newFeature.getCellSpaceMember();
 		if(cm == null)
-			cm = new ArrayList<CellSpace>();
+			cm = new ArrayList<>();
 		
 		List<CellSpaceBoundary> cbm = newFeature.getCellSpaceBoundaryMember();
 		if(cbm == null)
-			cbm = new ArrayList<CellSpaceBoundary>();
+			cbm = new ArrayList<>();
 
 		
 		IndoorFeatures parent = (IndoorFeatures) map.getFeature(parentId);
@@ -74,7 +72,8 @@ public class PrimalSpaceFeaturesDAO {
 				cbm.add(new CellSpaceBoundary(map,cb));
 			newFeature.setCellSpaceBoundaryMember(cbm);
 		}
-		
+
+		assert parent != null;
 		parent.setPrimalSpaceFeatures(newFeature);
 		newFeature.setParent(parent);
 		map.removeFutureID(id);
@@ -120,20 +119,16 @@ public class PrimalSpaceFeaturesDAO {
 		
 		if(cellspacemembers != null) {
 			List<CellSpace> oldChild = target.getCellSpaceMember();
-			List<CellSpace> newChild = new ArrayList<CellSpace>();
+			List<CellSpace> newChild = new ArrayList<>();
 			
 			for(String ni : cellspacemembers) {
 				newChild.add(new CellSpace(map,ni));
 			}
 			if(oldChild != null) {
-				for(CellSpace n : oldChild) {
-					if(!newChild.contains(n)) {
-						oldChild.remove(n);
-					}
-				}
+				oldChild.removeIf(n -> !newChild.contains(n));
 			}
 			else {
-				oldChild = new ArrayList<CellSpace>();
+				oldChild = new ArrayList<>();
 			}
 			
 			for(CellSpace n : newChild) {
@@ -157,7 +152,7 @@ public class PrimalSpaceFeaturesDAO {
 		
 		if(cellspaceboundarymembers != null) {
 			List<CellSpaceBoundary> oldChild = target.getCellSpaceBoundaryMember();
-			List<CellSpaceBoundary> newChild = new ArrayList<CellSpaceBoundary>();
+			List<CellSpaceBoundary> newChild = new ArrayList<>();
 			
 			
 			for(String ei :	cellspaceboundarymembers) {
@@ -165,14 +160,10 @@ public class PrimalSpaceFeaturesDAO {
 			}
 			
 			if(oldChild != null) {
-				for(CellSpaceBoundary n : oldChild) {
-					if(!newChild.contains(n)) {
-						oldChild.remove(n);
-					}
-				}
+				oldChild.removeIf(n -> !newChild.contains(n));
 			}
 			else {
-				oldChild = new ArrayList<CellSpaceBoundary>();
+				oldChild = new ArrayList<>();
 			}
 			
 			

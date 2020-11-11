@@ -70,6 +70,7 @@ public class EnvelopeDAO {
 
 		}
 
+		assert parent != null;
 		parent.setBoundedBy(newFeature);
 		newFeature.setParent(parent);
 		map.removeFutureID(id);
@@ -85,6 +86,7 @@ public class EnvelopeDAO {
 			if (map.hasFutureID(id))
 				target = (Envelope) map.getFutureFeature(id);
 		}
+		assert target != null;
 		IndoorFeatures parent = target.getParent();
 
 		map.removeFeature(id);

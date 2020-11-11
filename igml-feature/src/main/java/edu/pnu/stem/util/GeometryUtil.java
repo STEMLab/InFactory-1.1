@@ -4,10 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-
-
 
 /**
  * @author hyung

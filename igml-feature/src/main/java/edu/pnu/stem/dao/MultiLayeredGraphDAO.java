@@ -3,11 +3,10 @@ package edu.pnu.stem.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import edu.pnu.stem.binder.IndoorGMLMap;
-import edu.pnu.stem.feature.core.CellSpace;
-import edu.pnu.stem.feature.core.Edges;
 import edu.pnu.stem.feature.core.IndoorFeatures;
 import edu.pnu.stem.feature.core.InterEdges;
 import edu.pnu.stem.feature.core.MultiLayeredGraph;
@@ -42,10 +41,10 @@ public class MultiLayeredGraphDAO {
 		
 		List<SpaceLayers> sls = newFeature.getSpaceLayers();
 		if(sls == null)
-			sls = new ArrayList<SpaceLayers>();
+			sls = new ArrayList<>();
 		List<InterEdges> iel = newFeature.getInterEdges();
 		if(iel == null)
-			iel = new ArrayList<InterEdges>();
+			iel = new ArrayList<>();
 		
 		if(parent == null){
 			if(map.hasFutureID(parentId)){
@@ -122,21 +121,17 @@ public class MultiLayeredGraphDAO {
 		
 		if(spacelayers != null) {
 			List<SpaceLayers> oldChild = target.getSpaceLayers();
-			List<SpaceLayers> newChild = new ArrayList<SpaceLayers>();
+			List<SpaceLayers> newChild = new ArrayList<>();
 			
 			for(String ni : spacelayers) {
 				newChild.add(new SpaceLayers(map,ni));
 			}
 			
 			if(oldChild != null) {
-				for(SpaceLayers n : oldChild) {
-					if(!newChild.contains(n)) {
-						oldChild.remove(n);
-					}
-				}
+				oldChild.removeIf(n -> !newChild.contains(n));
 			}
 			else {
-				oldChild = new ArrayList<SpaceLayers>();
+				oldChild = new ArrayList<>();
 			}
 			
 			
@@ -161,7 +156,7 @@ public class MultiLayeredGraphDAO {
 		
 		if(interedges != null) {
 			List<InterEdges> oldChild = target.getInterEdges();
-			List<InterEdges> newChild = new ArrayList<InterEdges>();
+			List<InterEdges> newChild = new ArrayList<>();
 			
 			
 			for(String ei :	interedges) {
@@ -169,14 +164,10 @@ public class MultiLayeredGraphDAO {
 			}
 			
 			if(oldChild != null) {
-				for(InterEdges n : oldChild) {
-					if(!newChild.contains(n)) {
-						oldChild.remove(n);
-					}
-				}
+				oldChild.removeIf(n -> !newChild.contains(n));
 			}
 			else {
-				oldChild = new ArrayList<InterEdges>();
+				oldChild = new ArrayList<>();
 			}
 			
 			
@@ -190,7 +181,7 @@ public class MultiLayeredGraphDAO {
 			result.setInterEdges(oldChild);
 		}
 		else {
-			if(target.getInterEdges() != null & target.getInterEdges().size() != 0) {
+			if(target.getInterEdges() != null & Objects.requireNonNull(target.getInterEdges()).size() != 0) {
 				List<InterEdges> oldChild = target.getInterEdges();
 				
 				for(InterEdges child : oldChild) {

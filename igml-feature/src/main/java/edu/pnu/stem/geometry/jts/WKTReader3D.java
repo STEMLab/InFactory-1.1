@@ -1,6 +1,3 @@
-/**
- * 
- */
 package edu.pnu.stem.geometry.jts;
 
 import java.io.IOException;
@@ -187,8 +184,6 @@ public class WKTReader3D {
 	  /**
 	   *  Returns the next EMPTY or L_PAREN in the stream as uppercase text.
 	   *
-	   *@param  tokenizer        tokenizer over a stream of text in Well-known Text
-	   *      format. The next token must be EMPTY or L_PAREN.
 	   *@return                  the next EMPTY or L_PAREN in the stream as uppercase
 	   *      text.
 	   *@throws  ParseException  if the next token is not EMPTY or L_PAREN
@@ -206,8 +201,6 @@ public class WKTReader3D {
 	  /**
 	   *  Returns the next R_PAREN or COMMA in the stream.
 	   *
-	   *@param  tokenizer        tokenizer over a stream of text in Well-known Text
-	   *      format. The next token must be R_PAREN or COMMA.
 	   *@return                  the next R_PAREN or COMMA in the stream
 	   *@throws  ParseException  if the next token is not R_PAREN or COMMA
 	   *@throws  IOException     if an I/O error occurs
@@ -224,8 +217,6 @@ public class WKTReader3D {
 	  /**
 	   *  Returns the next R_PAREN in the stream.
 	   *
-	   *@param  tokenizer        tokenizer over a stream of text in Well-known Text
-	   *      format. The next token must be R_PAREN.
 	   *@return                  the next R_PAREN in the stream
 	   *@throws  ParseException  if the next token is not R_PAREN
 	   *@throws  IOException     if an I/O error occurs
@@ -242,8 +233,6 @@ public class WKTReader3D {
 	  /**
 	   *  Returns the next word in the stream.
 	   *
-	   *@param  tokenizer        tokenizer over a stream of text in Well-known Text
-	   *      format. The next token must be a word.
 	   *@return                  the next word in the stream as uppercase text
 	   *@throws  ParseException  if the next token is not a word
 	   *@throws  IOException     if an I/O error occurs
@@ -269,8 +258,6 @@ public class WKTReader3D {
 	  /**
 	   *  Returns the next word in the stream.
 	   *
-	   *@param  tokenizer        tokenizer over a stream of text in Well-known Text
-	   *      format. The next token must be a word.
 	   *@return                  the next word in the stream as uppercase text
 	   *@throws  ParseException  if the next token is not a word
 	   *@throws  IOException     if an I/O error occurs
@@ -329,8 +316,6 @@ public class WKTReader3D {
 	  /**
 	   *  Creates a <code>Geometry</code> using the next token in the stream.
 	   *
-	   *@param  tokenizer        tokenizer over a stream of text in Well-known Text
-	   *      format. The next tokens must form a &lt;Geometry Tagged Text&gt;.
 	   *@return                  a <code>Geometry</code> specified by the next token
 	   *      in the stream
 	   *@throws  ParseException  if the coordinates used to create a <code>Polygon</code>
@@ -384,8 +369,6 @@ public class WKTReader3D {
 	  /**
 	   *  Creates a <code>Point</code> using the next token in the stream.
 	   *
-	   *@param  tokenizer        tokenizer over a stream of text in Well-known Text
-	   *      format. The next tokens must form a &lt;Point Text&gt;.
 	   *@return                  a <code>Point</code> specified by the next token in
 	   *      the stream
 	   *@throws  IOException     if an I/O error occurs
@@ -404,8 +387,6 @@ public class WKTReader3D {
 	  /**
 	   *  Creates a <code>LineString</code> using the next token in the stream.
 	   *
-	   *@param  tokenizer        tokenizer over a stream of text in Well-known Text
-	   *      format. The next tokens must form a &lt;LineString Text&gt;.
 	   *@return                  a <code>LineString</code> specified by the next
 	   *      token in the stream
 	   *@throws  IOException     if an I/O error occurs
@@ -418,8 +399,6 @@ public class WKTReader3D {
 	  /**
 	   *  Creates a <code>LinearRing</code> using the next token in the stream.
 	   *
-	   *@param  tokenizer        tokenizer over a stream of text in Well-known Text
-	   *      format. The next tokens must form a &lt;LineString Text&gt;.
 	   *@return                  a <code>LinearRing</code> specified by the next
 	   *      token in the stream
 	   *@throws  IOException     if an I/O error occurs
@@ -444,8 +423,6 @@ public class WKTReader3D {
 	  /**
 	   *  Creates a <code>MultiPoint</code> using the next tokens in the stream.
 	   *
-	   *@param  tokenizer        tokenizer over a stream of text in Well-known Text
-	   *      format. The next tokens must form a &lt;MultiPoint Text&gt;.
 	   *@return                  a <code>MultiPoint</code> specified by the next
 	   *      token in the stream
 	   *@throws  IOException     if an I/O error occurs
@@ -500,8 +477,6 @@ public class WKTReader3D {
 	  /**
 	   *  Creates a <code>Polygon</code> using the next token in the stream.
 	   *
-	   *@param  tokenizer        tokenizer over a stream of text in Well-known Text
-	   *      format. The next tokens must form a &lt;Polygon Text&gt;.
 	   *@return                  a <code>Polygon</code> specified by the next token
 	   *      in the stream
 	   *@throws  ParseException  if the coordinates used to create the <code>Polygon</code>
@@ -532,8 +507,6 @@ public class WKTReader3D {
 	  /**
 	   *  Creates a <code>MultiLineString</code> using the next token in the stream.
 	   *
-	   *@param  tokenizer        tokenizer over a stream of text in Well-known Text
-	   *      format. The next tokens must form a &lt;MultiLineString Text&gt;.
 	   *@return                  a <code>MultiLineString</code> specified by the
 	   *      next token in the stream
 	   *@throws  IOException     if an I/O error occurs
@@ -560,8 +533,6 @@ public class WKTReader3D {
 	  /**
 	   *  Creates a <code>MultiPolygon</code> using the next token in the stream.
 	   *
-	   *@param  tokenizer        tokenizer over a stream of text in Well-known Text
-	   *      format. The next tokens must form a &lt;MultiPolygon Text&gt;.
 	   *@return                  a <code>MultiPolygon</code> specified by the next
 	   *      token in the stream, or if if the coordinates used to create the
 	   *      <code>Polygon</code> shells and holes do not form closed linestrings.
@@ -589,8 +560,6 @@ public class WKTReader3D {
 	  /**
 	   *  Creates a <code>Solid</code> using the next token in the stream.
 	   *
-	   *@param  tokenizer        tokenizer over a stream of text in Well-known Text
-	   *      format. The next tokens must form a &lt;MultiPolygon Text&gt;.
 	   *@return                  a <code>MultiPolygon</code> specified by the next
 	   *      token in the stream, or if if the coordinates used to create the
 	   *      <code>Polygon</code> shells and holes do not form closed linestrings.
@@ -619,8 +588,6 @@ public class WKTReader3D {
 	   *  Creates a <code>GeometryCollection</code> using the next token in the
 	   *  stream.
 	   *
-	   *@param  tokenizer        tokenizer over a stream of text in Well-known Text
-	   *      format. The next tokens must form a &lt;GeometryCollection Text&gt;.
 	   *@return                  a <code>GeometryCollection</code> specified by the
 	   *      next token in the stream
 	   *@throws  ParseException  if the coordinates used to create a <code>Polygon</code>

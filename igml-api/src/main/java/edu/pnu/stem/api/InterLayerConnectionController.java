@@ -1,13 +1,10 @@
 package edu.pnu.stem.api;
 
-import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,27 +25,18 @@ import edu.pnu.stem.feature.core.InterLayerConnection;
 @RestController
 @RequestMapping("/documents/{docId}/interlayerconnection")
 public class InterLayerConnectionController {
-	
-	@Autowired
-    private ApplicationContext applicationContext;
-	
+
 	@PostMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createInterLayerConnection(@PathVariable("docId") String docId,@PathVariable("id") String id, @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
-		String parentId = json.get("parentId").asText().trim();
-		String name = null;
-		String description = null;
-		
-		String comment = null;
+	public void createInterLayerConnection(@PathVariable("docId") String docId, @PathVariable("id") String id,
+										   @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
+		String parentId 			= json.get("parentId").asText().trim();
+		String name 				= null;
+		String description 			= null;
+		String comment 				= null;
 		String typeOfTopoExpression = null;
-		
-		String[] interConnects = null;
-		String[] connectedLayers = null;
-		
-		List<String> spacelayers = null;
-		List<String> interedges = null;
-		
-		InterLayerConnection ilc;
+		String[] interConnects 		= null;
+		String[] connectedLayers 	= null;
 		
 		if(id == null || id.isEmpty()) {
 			id = UUID.randomUUID().toString();
@@ -68,12 +56,11 @@ public class InterLayerConnectionController {
 				JsonNode connectsNode = json.get("properties").get("interConnects");
 				if(connectsNode.isArray()) {
 					interConnects = new String[2];
-					
 					interConnects[0] = connectsNode.get(0).asText().trim();
 					interConnects[1] = connectsNode.get(1).asText().trim();
-					System.out.println("interConnects "+" "+connectsNode.size());
-					System.out.println("interConnects "+" "+interConnects[0]);
-					System.out.println("interConnects "+" "+interConnects[1]);
+					System.out.println("interConnects "+" "+ connectsNode.size());
+					System.out.println("interConnects "+" "+ interConnects[0]);
+					System.out.println("interConnects "+" "+ interConnects[1]);
 				}
 			}
 			if(json.get("properties").has("connectedLayers")){
@@ -82,26 +69,26 @@ public class InterLayerConnectionController {
 					connectedLayers = new String[2];
 					connectedLayers[0] = connectsNode.get(0).asText().trim();
 					connectedLayers[1] = connectsNode.get(1).asText().trim();
-					System.out.println("connectedLayers "+connectsNode.size());
-					System.out.println("connectedLayers "+connectedLayers[0]);
-					System.out.println("connectedLayers "+connectedLayers[1]);
+					System.out.println("connectedLayers "+ connectsNode.size());
+					System.out.println("connectedLayers "+ connectedLayers[0]);
+					System.out.println("connectedLayers "+ connectedLayers[1]);
 				}
 			}
 			if(json.get("properties").has("typeOfTopoExpression")) {
-				JsonNode connectsNode = json.get("properties").get("typeOfTopoExpression");
-				typeOfTopoExpression = connectsNode.asText().trim();
+				JsonNode connectsNode 	= json.get("properties").get("typeOfTopoExpression");
+				typeOfTopoExpression 	= connectsNode.asText().trim();
 			}
-			
 		}
+
+		InterLayerConnection ilc;
 		try {
-			Container container = applicationContext.getBean(Container.class);
-			IndoorGMLMap map = container.getDocument(docId);
+			IndoorGMLMap map = Container.getDocument(docId);
 			ilc = InterLayerConnectionDAO.createInterLayerConnection(map, parentId, id, name, description, typeOfTopoExpression, comment, interConnects, connectedLayers);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 			throw new UndefinedDocumentException();
 		}
+
 		response.setHeader("Location", request.getRequestURL().append(ilc.getId()).toString());
 	}
-
 }

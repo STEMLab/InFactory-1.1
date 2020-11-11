@@ -3,11 +3,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.pnu.stem.binder.IndoorGMLMap;
-import edu.pnu.stem.feature.core.CellSpace;
 import edu.pnu.stem.feature.core.InterEdges;
 import edu.pnu.stem.feature.core.InterLayerConnection;
 import edu.pnu.stem.feature.core.MultiLayeredGraph;
-import edu.pnu.stem.feature.core.SpaceLayer;
 
 public class InterEdgesDAO {
 	public static InterEdges createInterEdges(IndoorGMLMap map, String parentId, String id, String name, String description, List<String>interLayerConnectionMember){
@@ -36,9 +34,9 @@ public class InterEdgesDAO {
 		}
 		
 		if(interLayerConnectionMember != null){
-			List<InterLayerConnection>tempList = new ArrayList<InterLayerConnection>();
-			for(int i = 0 ; i < interLayerConnectionMember.size() ; i++){
-				InterLayerConnection temp = new InterLayerConnection(map, interLayerConnectionMember.get(i));
+			List<InterLayerConnection>tempList = new ArrayList<>();
+			for (String s : interLayerConnectionMember) {
+				InterLayerConnection temp = new InterLayerConnection(map, s);
 				tempList.add(temp);
 			}
 			newFeature.setInterLayerConnectionMember(tempList);
@@ -85,17 +83,13 @@ public class InterEdgesDAO {
 		
 		if(interLayerConnectionMember != null) {
 			List<InterLayerConnection> oldChild = target.getInterLayerConnectionMember();
-			List<InterLayerConnection> newChild = new ArrayList<InterLayerConnection>();
+			List<InterLayerConnection> newChild = new ArrayList<>();
 			
 			for(String ni : interLayerConnectionMember) {
 				newChild.add(new InterLayerConnection(map,ni));
 			}
-			
-			for(InterLayerConnection n : oldChild) {
-				if(!newChild.contains(n)) {
-					oldChild.remove(n);
-				}
-			}
+
+			oldChild.removeIf(n -> !newChild.contains(n));
 			
 			for(InterLayerConnection n : newChild) {
 				if(!oldChild.contains(n)) {
@@ -103,7 +97,7 @@ public class InterEdgesDAO {
 				}
 			}
 			
-			result.setInterLayerConnectionMember(oldChild);;
+			result.setInterLayerConnectionMember(oldChild);
 		}
 		else {
 			if(target.getInterLayerConnectionMember().size() != 0) {

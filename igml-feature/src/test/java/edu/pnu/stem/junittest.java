@@ -35,14 +35,11 @@ public class junittest {
             map.setDocId("test");        
             doc = edu.pnu.stem.binder.Unmashaller.importIndoorGML("test","src/test/resources/example1.gml");
             testObject = edu.pnu.stem.binder.Convert2FeatureClass.change2FeatureClass(map,"test", doc);
-        } catch (JAXBException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
         } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
         }
-     }
+	 }
     // @Ignore
      @Test//primespace id check
      public void PriamlSpace_id(){

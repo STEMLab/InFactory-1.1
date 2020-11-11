@@ -86,12 +86,12 @@ public class AnchorSpaceDAO {
 		}
 
 		if (partialboundedBy != null) {
-			List<CellSpaceBoundary> pbb = new ArrayList<CellSpaceBoundary>();
+			List<CellSpaceBoundary> pbb = new ArrayList<>();
 			for (String csbi : partialboundedBy) {
 				CellSpaceBoundary temp = new CellSpaceBoundary(map, csbi);
 				pbb.add(temp);
 			}
-			result.setPartialboundedBy(pbb);
+			result.setPartialBoundedBy(pbb);
 		}
 
 		map.removeFeature(id);
@@ -151,7 +151,7 @@ public class AnchorSpaceDAO {
 		// parent.addCellSpaceMember(newFeature);
 		List<CellSpace> cellSpaceMember = parent.getCellSpaceMember();
 		if (cellSpaceMember == null)
-			cellSpaceMember = new ArrayList<CellSpace>();
+			cellSpaceMember = new ArrayList<>();
 
 		cellSpaceMember.add(newFeature);
 		parent.setCellSpaceMember(cellSpaceMember);
@@ -174,7 +174,7 @@ public class AnchorSpaceDAO {
 		}
 
 		if (partialBoundedBy != null) {
-			List<CellSpaceBoundary> realPartialBoundedBy = new ArrayList<CellSpaceBoundary>();
+			List<CellSpaceBoundary> realPartialBoundedBy = new ArrayList<>();
 			for (String b : partialBoundedBy) {
 				CellSpaceBoundary pb = (CellSpaceBoundary) map.getFeature(b);
 				if (pb == null) {
@@ -182,7 +182,7 @@ public class AnchorSpaceDAO {
 				}
 				realPartialBoundedBy.add(pb);
 			}
-			newFeature.setPartialboundedBy(realPartialBoundedBy);
+			newFeature.setPartialBoundedBy(realPartialBoundedBy);
 		}
 		map.removeFutureID(id);
 
@@ -215,7 +215,7 @@ public class AnchorSpaceDAO {
 		}
 
 		// parent.addCellSpaceMember(newFeature);
-		ArrayList<CellSpace> cellSpaceMember = new ArrayList<CellSpace>();
+		ArrayList<CellSpace> cellSpaceMember = new ArrayList<>();
 		cellSpaceMember.add(newFeature);
 		parent.setCellSpaceMember(cellSpaceMember);
 		newFeature.setParent(parent);

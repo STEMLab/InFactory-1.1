@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import edu.pnu.stem.binder.IndoorGMLMap;
 import edu.pnu.stem.feature.core.MultiLayeredGraph;
-import edu.pnu.stem.feature.core.Nodes;
 import edu.pnu.stem.feature.core.SpaceLayer;
 import edu.pnu.stem.feature.core.SpaceLayers;
 
@@ -28,7 +27,7 @@ public class SpaceLayersDAO {
 		
 		List<SpaceLayer> sl = newFeature.getSpaceLayerMember();
 		if(sl == null)
-			sl = new ArrayList<SpaceLayer>();
+			sl = new ArrayList<>();
 		
 		MultiLayeredGraph parent = (MultiLayeredGraph) map.getFeature(parentId);
 		if(parent == null){
@@ -57,7 +56,7 @@ public class SpaceLayersDAO {
 		
 		List<SpaceLayers> spaceLayers = parent.getSpaceLayers();
 		if(spaceLayers == null) {
-			spaceLayers = new ArrayList<SpaceLayers>();
+			spaceLayers = new ArrayList<>();
 		}
 		spaceLayers.add(newFeature);
 		parent.setSpaceLayers(spaceLayers);
@@ -104,21 +103,17 @@ public class SpaceLayersDAO {
 		
 		if(spacelayer != null) {
 			List<SpaceLayer> oldChild = target.getSpaceLayerMember();
-			List<SpaceLayer> newChild = new ArrayList<SpaceLayer>();
+			List<SpaceLayer> newChild = new ArrayList<>();
 			
 			for(String ni : spacelayer) {
 				newChild.add(new SpaceLayer(map,ni));
 			}
 			
 			if(oldChild != null) {
-				for(SpaceLayer n : oldChild) {
-					if(!newChild.contains(n)) {
-						oldChild.remove(n);
-					}
-				}
+				oldChild.removeIf(n -> !newChild.contains(n));
 			}
 			else {
-				oldChild = new ArrayList<SpaceLayer>();
+				oldChild = new ArrayList<>();
 			}
 			
 			

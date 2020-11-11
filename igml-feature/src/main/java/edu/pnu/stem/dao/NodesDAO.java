@@ -41,7 +41,7 @@ public class NodesDAO {
 		
 		List<State>sm = newFeature.getStateMember();
 		if(sm == null)
-			sm = new ArrayList<State>();
+			sm = new ArrayList<>();
 		
 		SpaceLayer parent = (SpaceLayer) map.getFeature(parentId);
 		
@@ -56,7 +56,7 @@ public class NodesDAO {
 		
 		List<Nodes>nodes = parent.getNodes();
 		if(nodes == null)
-			nodes = new ArrayList<Nodes>();
+			nodes = new ArrayList<>();
 		
 		nodes.add(newFeature);
 		
@@ -107,7 +107,7 @@ public class NodesDAO {
 		
 		if(stateMembers != null) {
 			List<State> oldChild = target.getStateMember();
-			List<State> newChild = new ArrayList<State>();
+			List<State> newChild = new ArrayList<>();
 			
 		
 			for(String si : stateMembers) {
@@ -115,14 +115,10 @@ public class NodesDAO {
 			}
 			
 			if(oldChild != null) {
-				for(State s : oldChild) {
-					if(!newChild.contains(s)) {
-						oldChild.remove(s);
-					}
-				}
+				oldChild.removeIf(s -> !newChild.contains(s));
 			}
 			else {
-				oldChild = new ArrayList<State>();
+				oldChild = new ArrayList<>();
 			}
 			
 			

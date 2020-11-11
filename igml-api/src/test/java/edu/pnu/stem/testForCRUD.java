@@ -3,8 +3,6 @@ package edu.pnu.stem;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.JAXBException;
-
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 
@@ -61,10 +59,7 @@ public class testForCRUD extends TestCase{
 			//edu.pnu.stem.binder.Mashaller.marshalIndoorFeatures(null, Convert2JaxbClass.change2JaxbClass(map,savedDoc));
 			
 
-		 } catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
+		 } catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

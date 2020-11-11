@@ -21,10 +21,10 @@ public class MyCoordinate {
 		return x;
 	}
 	public BigDecimal getY() {
-		return x;
+		return y;
 	}
 	public BigDecimal getZ() {
-		return x;
+		return z;
 	}
 
 }
