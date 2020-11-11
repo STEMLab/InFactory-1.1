@@ -4,12 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>edu.pnu.stem.igml</groupId>
 	<artifactId>indoorgml-factory</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<name>IndoorGML Factory</name>
+	<packaging>pom</packaging>
 
 	<organization>
 		<name>STEMLab in Pusan National University</name>
-		<url>http://stem.pnu.edu</url>
+		<url>http://stem.pusan.ac.kr/</url>
 	</organization>
 
 	<licenses>
@@ -21,37 +22,42 @@
 	</licenses>
 
 	<properties>
-		<spring.version>5.0.2.RELEASE</spring.version>
-		<jetty.version>9.4.8.v20171121</jetty.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<junit.version>4.13.1</junit.version>
+		<spring.version>5.2.10.RELEASE</spring.version>
+		<jetty.version>9.4.34.v20201102</jetty.version>
 		<ogc-schemas.version>2.6.2-SNAPSHOT</ogc-schemas.version>
 		<jts.version>1.15.0</jts.version>
+		<slf4j.version>1.7.30</slf4j.version>
+		<fasterxml.jackson.version>2.11.2</fasterxml.jackson.version>
+		<jaxb-api.version>2.3.1</jaxb-api.version>
+		<jaxb-core.version>2.3.0.1</jaxb-core.version>
 	</properties>
 
-	<packaging>pom</packaging>
-
 	<dependencies>
-
+		<!-- ======================================================= -->
+		<!-- JAXB and OGC Schema -->
+		<!-- ======================================================= -->
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
-			<version>2.2.11</version>
+			<version>${jaxb-api.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
 			<artifactId>jaxb-core</artifactId>
-			<version>2.2.11</version>
+			<version>${jaxb-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
 			<artifactId>jaxb-impl</artifactId>
-			<version>2.2.11</version>
+			<version>${jaxb-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jvnet.ogc</groupId>
 			<artifactId>gml-v_3_2_1</artifactId>
-			<version>${ogc-schemas.version}</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/gml-v_3_2_1-2.6.2-SNAPSHOT.jar</systemPath>
+			<version>2.6.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jvnet.ogc</groupId>
@@ -60,7 +66,6 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/indoorgml-v_1_0-2.6.2-SNAPSHOT.jar</systemPath>
 		</dependency>
-
 		<!-- ======================================================= -->
 		<!-- Spring and Jetty -->
 		<!-- ======================================================= -->
@@ -82,9 +87,8 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>5.0.2.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-servlet</artifactId>
@@ -95,23 +99,21 @@
 			<artifactId>jetty-server</artifactId>
 			<version>${jetty.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
-			<version>2.9.3</version>
+			<version>${fasterxml.jackson.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.9.3</version>
+			<version>${fasterxml.jackson.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -125,17 +127,13 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.7.0</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>11</source>
+					<target>11</target>
 					<fork>true</fork>
 					<encoding>EUC-KR</encoding>
 					<maxmem>512M</maxmem>
 				</configuration>
 			</plugin>
-			
-			
-			
-			
 			<!-- ======================================================= -->
 			<!-- Resources. -->
 			<!-- ======================================================= -->
@@ -167,7 +165,6 @@
 					</resources>
 				</configuration>
 			</plugin>
-
 			<!-- ======================================================= -->
 			<!-- JAR packaging. -->
 			<!-- ======================================================= -->
@@ -182,14 +179,10 @@
 						</manifest>
 						<manifestEntries>
 							<Project-Version>${project.version}</Project-Version>
-							<Git-Revision>${build.commit.id}</Git-Revision>
-							<Build-Timestamp>${build.timestamp}</Build-Timestamp>
 						</manifestEntries>
 					</archive>
 				</configuration>
 			</plugin>
-
-
 			<!-- ======================================================= -->
 			<!-- Maven Jetty. -->
 			<!-- ======================================================= -->
@@ -198,9 +191,6 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>${jetty.version}</version>
 			</plugin>
-
-
-
 			<!-- ======================================================= -->
 			<!-- Source packaging. -->
 			<!-- ======================================================= -->
@@ -223,9 +213,8 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.10.1</version>
+				<version>3.2.0</version>
 				<configuration>
-					<aggregate>true</aggregate>
 					<show>private</show>
 					<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
 					<docletArtifact>
@@ -233,14 +222,6 @@
 						<artifactId>doclet</artifactId>
 						<version>5.1</version>
 					</docletArtifact>
-					<additionalparam>
-						-inferrel -attributes -types -visibility -inferdep
-						-quiet -hide java.*
-						-collpackages java.util.* -qualify
-						-postfixpackage
-						-nodefontsize 9
-						-nodefontpackagesize 7
-					</additionalparam>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -248,6 +229,5 @@
 	<modules>
 		<module>igml-api</module>
 		<module>igml-feature</module>
-		<module>database</module>
 	</modules>
 	</project>
