@@ -8,20 +8,20 @@ InFactory-1.1 is for creating & editing OGC IndoorGML 1.1 formatted data. This p
 ### Prerequisites
 1) OS: regardless of OS  
 2) Maven: over 3.5 version. You need to install Maven.
-   * This project supports the Maven wrapper. If you do not want to install Maven, follow `With Maven wrapper`.
+   * This project supports the Maven wrapper. If you do not want to install Maven, follow `With Maven wrapper` section.
 3) JDK: over 11 version. 
   
 ### Installing and Running
 #### With installed Maven
 1) Project build `mvn clean install`
 2) Spring server execute `mvn jetty:run` 
-3) We recommend using the other port number(e.g.,9797) with parameter
+3) We recommend using the other port number(e.g., 9797) with parameter
 `mvn jetty:run "-Djetty.port=9797"`
 
 #### With Maven wrapper
 1) Project build `./mvnw clean install`
 2) Spring server execute `./mvnw jetty:run` 
-3) We recommend using the other port number(e.g.,9797) with parameter
+3) We recommend using the other port number(e.g., 9797) with parameter
 `./mvnw jetty:run "-Djetty.port=9797"` 
    
 ## Built With
@@ -38,7 +38,7 @@ It is explained at the [Wiki](https://github.com/STEMLab/InFactory/wiki).
 * **Taehoon Kim - InFactory Server developer and maintainer, taehoon.kim@pnu.edu**
 
 ## Contributing
-Please refer to each project's style guidelines and guidelines for submitting patches and additions. In general, we follow the "fork-and-pull" Git workflow.
+Please refer to each project's style guidelines and guidelines for submitting patches and additions. In general, we follow the **_"Fork & Pull"_** Git workflow.
 
 1) Fork the repo on GitHub.
 2) Clone the project to your own machine.
