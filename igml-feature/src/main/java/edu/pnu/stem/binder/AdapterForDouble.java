@@ -7,7 +7,7 @@ public class AdapterForDouble extends XmlAdapter<BigDecimal, Double> {
 
 	@Override
 	public Double unmarshal(BigDecimal v) {
-		return new Double(v.toString());
+		return Double.parseDouble(v.toString());
 	}
 
 	@Override
