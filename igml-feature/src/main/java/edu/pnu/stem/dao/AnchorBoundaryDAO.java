@@ -43,7 +43,7 @@ public class AnchorBoundaryDAO {
 			}
 		}
 
-		List<CellSpaceBoundary> cellSpaceBoundaryMember = new ArrayList<CellSpaceBoundary>();
+		List<CellSpaceBoundary> cellSpaceBoundaryMember = new ArrayList<>();
 		cellSpaceBoundaryMember.add(newFeature);
 		parent.setCellSpaceBoundaryMember(cellSpaceBoundaryMember);
 		newFeature.setParent(parent);
@@ -92,7 +92,6 @@ public class AnchorBoundaryDAO {
 		}
 
 		AnchorBoundary newFeature = new AnchorBoundary(map, id);
-		;
 
 		if (map.hasFutureID(id)) {
 			//newFeature = (AnchorBoundary) map.getFutureFeature(id);
@@ -172,7 +171,7 @@ public class AnchorBoundaryDAO {
 		}
 
 		if (duality == null) {
-			Transition d = (Transition) target.getDuality();
+			Transition d = target.getDuality();
 			if (d != null)
 				d.resetDuality();
 		} else {
@@ -203,7 +202,6 @@ public class AnchorBoundaryDAO {
 			duality.resetDuality();
 		}
 
-		// cellspace 찾아가서 partialboundedby 해제
 		CellSpace cellspaceForPartialBoundedBy = target.getCellSpace();
 		cellspaceForPartialBoundedBy.deletePartialBoundedBy(target);
 

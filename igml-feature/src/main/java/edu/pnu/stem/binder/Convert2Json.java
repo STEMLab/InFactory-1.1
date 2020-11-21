@@ -671,13 +671,13 @@ public class Convert2Json {
 			properties.put("description", target.getDescription());
 		}
 
-		if (target.getPartialboundedBy() != null || target.getPartialboundedBy().size() != 0) {
+		if (target.getPartialBoundedBy() != null || target.getPartialBoundedBy().size() != 0) {
 			if (properties == null) {
 				properties = JsonNodeFactory.instance.objectNode();
 			}
 			List<String> csbl = new ArrayList<String>();
 			ArrayNode array = JsonNodeFactory.instance.arrayNode();
-			for (CellSpaceBoundary b : target.getPartialboundedBy())
+			for (CellSpaceBoundary b : target.getPartialBoundedBy())
 				array.add(b.getId());
 			properties.set("partialboundedBy", array);
 
@@ -926,13 +926,13 @@ public class Convert2Json {
 			properties.put("usage", target.getUsageType());
 		}
 
-		if (target.getPartialboundedBy() != null || target.getPartialboundedBy().size() != 0) {
+		if (target.getPartialBoundedBy() != null || target.getPartialBoundedBy().size() != 0) {
 			if (properties == null) {
 				properties = JsonNodeFactory.instance.objectNode();
 			}
 			List<String> csbl = new ArrayList<String>();
 			ArrayNode array = JsonNodeFactory.instance.arrayNode();
-			for (CellSpaceBoundary b : target.getPartialboundedBy())
+			for (CellSpaceBoundary b : target.getPartialBoundedBy())
 				array.add(b.getId());
 			properties.set("partialboundedBy", array);
 
@@ -1001,13 +1001,13 @@ public class Convert2Json {
 			properties.put("usage", target.getUsageType());
 		}
 
-		if (target.getPartialboundedBy() != null || target.getPartialboundedBy().size() != 0) {
+		if (target.getPartialBoundedBy() != null || target.getPartialBoundedBy().size() != 0) {
 			if (properties == null) {
 				properties = JsonNodeFactory.instance.objectNode();
 			}
 			List<String> csbl = new ArrayList<String>();
 			ArrayNode array = JsonNodeFactory.instance.arrayNode();
-			for (CellSpaceBoundary b : target.getPartialboundedBy())
+			for (CellSpaceBoundary b : target.getPartialBoundedBy())
 				array.add(b.getId());
 			properties.set("partialboundedBy", array);
 
@@ -1076,13 +1076,13 @@ public class Convert2Json {
 			properties.put("usage", target.getUsageType());
 		}
 
-		if (target.getPartialboundedBy() != null || target.getPartialboundedBy().size() != 0) {
+		if (target.getPartialBoundedBy() != null || target.getPartialBoundedBy().size() != 0) {
 			if (properties == null) {
 				properties = JsonNodeFactory.instance.objectNode();
 			}
 			List<String> csbl = new ArrayList<String>();
 			ArrayNode array = JsonNodeFactory.instance.arrayNode();
-			for (CellSpaceBoundary b : target.getPartialboundedBy())
+			for (CellSpaceBoundary b : target.getPartialBoundedBy())
 				array.add(b.getId());
 			properties.set("partialboundedBy", array);
 

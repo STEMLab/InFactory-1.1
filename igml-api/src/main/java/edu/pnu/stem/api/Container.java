@@ -7,25 +7,18 @@ import edu.pnu.stem.binder.IndoorGMLMap;
 @Service
 public class Container {
 	private static Container docs = new Container();
-	private static ConcurrentHashMap<String, IndoorGMLMap> docContainer = new ConcurrentHashMap<String, IndoorGMLMap>();
+	private static ConcurrentHashMap<String, IndoorGMLMap> docContainer = new ConcurrentHashMap<>();
 	
 	/**
 	 * @return the container
 	 */
-	
-	
 	public static Container getInstance() {
 		return docs;
 	}
-	
+
 	public ConcurrentHashMap<String, IndoorGMLMap> getContainer() {
 		return docContainer;
 	}
-
-	/**
-	 * @param container
-	 *            the container to set
-	 */
 	
 	public static IndoorGMLMap getDocument(String docID) {
 		if (hasDoc(docID)) {
@@ -49,16 +42,11 @@ public class Container {
 	}
 	
 	public static void removeDocument(String docID) {
-		if(docContainer.containsKey(docID)) {
-			docContainer.remove(docID);
-		}
+		docContainer.remove(docID);
 	}
 	
 	public static boolean hasDoc(String ID) {
-		if (docContainer.containsKey(ID))
-			return true;
-		else
-			return false;
+		return docContainer.containsKey(ID);
 	}
 	
 	// TODO : Refactor this 
@@ -85,7 +73,6 @@ public class Container {
 					newFeature = featureContainer.get(id);
 				}
 			}
-
 		}
 		return newFeature;
 	}

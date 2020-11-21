@@ -3,6 +3,7 @@ package edu.pnu.stem.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import edu.pnu.stem.binder.IndoorGMLMap;
@@ -30,10 +31,10 @@ public class SpaceLayerDAO {
 		
 		List<Nodes> nl = newFeature.getNodes();
 		if(nl == null)
-			nl = new ArrayList<Nodes>();
+			nl = new ArrayList<>();
 		List<Edges> el = newFeature.getEdges();
 		if(el == null)
-			el = new ArrayList<Edges>();
+			el = new ArrayList<>();
 		
 		
 		map.setFeature(id, "SpaceLayer", newFeature);
@@ -72,7 +73,7 @@ public class SpaceLayerDAO {
 		
 		List<SpaceLayer> spaceLayerMember = parent.getSpaceLayerMember();
 		if(spaceLayerMember == null)
-				spaceLayerMember = new ArrayList<SpaceLayer>();
+				spaceLayerMember = new ArrayList<>();
 		spaceLayerMember.add(newFeature);
 		parent.setSpaceLayerMember(spaceLayerMember);
 		newFeature.setParent(parent);
@@ -116,21 +117,17 @@ public class SpaceLayerDAO {
 		
 		if(nodes != null) {
 			List<Nodes> oldChild = target.getNodes();
-			List<Nodes> newChild = new ArrayList<Nodes>();
+			List<Nodes> newChild = new ArrayList<>();
 			
 			for(String ni : nodes) {
 				newChild.add(new Nodes(map,ni));
 			}
 			
 			if(oldChild != null) {
-				for(Nodes n : oldChild) {
-					if(!newChild.contains(n)) {
-						oldChild.remove(n);
-					}
-				}
+				oldChild.removeIf(n -> !newChild.contains(n));
 			}
 			else {
-				oldChild = new ArrayList<Nodes>();
+				oldChild = new ArrayList<>();
 			}
 			
 			
@@ -155,7 +152,7 @@ public class SpaceLayerDAO {
 		
 		if(edges != null) {
 			List<Edges> oldChild = target.getEdges();
-			List<Edges> newChild = new ArrayList<Edges>();
+			List<Edges> newChild = new ArrayList<>();
 			
 			
 			for(String ei : edges) {
@@ -163,14 +160,10 @@ public class SpaceLayerDAO {
 			}
 			
 			if(oldChild != null) {
-				for(Edges n : oldChild) {
-					if(!newChild.contains(n)) {
-						oldChild.remove(n);
-					}
-				}
+				oldChild.removeIf(n -> !newChild.contains(n));
 			}
 			else {
-				oldChild = new ArrayList<Edges>();
+				oldChild = new ArrayList<>();
 			}
 			
 						
@@ -184,7 +177,7 @@ public class SpaceLayerDAO {
 			result.setEdges(oldChild);
 		}
 		else {
-			if(target.getEdges() != null & target.getEdges().size() != 0) {
+			if(target.getEdges() != null & Objects.requireNonNull(target.getEdges()).size() != 0) {
 				List<Edges> oldChild = target.getEdges();
 				
 				for(Edges child : oldChild) {

@@ -21,6 +21,7 @@ public class ContextJUnitTest extends AbstractJUnit4SpringContextTests {
 	@Ignore
 	@Test
 	public void testContext() {
+		assert applicationContext != null;
 		Assert.assertNotNull(applicationContext.getBean(Container.class));
 	}
 }

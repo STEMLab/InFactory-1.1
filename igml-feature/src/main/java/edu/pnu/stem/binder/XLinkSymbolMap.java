@@ -20,9 +20,9 @@ public class XLinkSymbolMap {
 	}
 	
 	public XLinkSymbolMap() {
-		this.idRegistryMap = new HashMap<String, Object>();
-		this.parentMap = new HashMap<Object, Object>();
-		this.referenceRegistryMap = new HashMap<String, Object>();
+		this.idRegistryMap = new HashMap<>();
+		this.parentMap = new HashMap<>();
+		this.referenceRegistryMap = new HashMap<>();
 	}
 	
 	public Object getObjectById(String id) {

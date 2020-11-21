@@ -11,11 +11,8 @@ import java.util.Map;
  *
  */
 public class BindingNode {
-	
 	private Map<String, Object> attributes = new HashMap<String, Object>();
-	
 	private Map<String, BindingNode> associations = new HashMap<String, BindingNode>();
-	
 	private Map<String, List<BindingNode>> collections = new HashMap<String, List<BindingNode>>();
 	
 	public void addAttribute(String key, Object value) {
@@ -26,7 +23,6 @@ public class BindingNode {
 			String msg = "Duplicated Key : " + key;
 			throw new IllegalArgumentException(msg);
 		}
-		
 	}
 	
 	public Object getAttribute(String key) {
@@ -51,8 +47,7 @@ public class BindingNode {
 	public Map<String, Object> getAttributes() {
 		return attributes;
 	}
-	
-	
+
 	public void addAssociation(String key, BindingNode node) {
 		key = key.toUpperCase();
 		if( !associations.containsKey(key)) {
@@ -126,7 +121,5 @@ public class BindingNode {
 			return (String) value;
 		}
 	}
-	
-	
 }
 

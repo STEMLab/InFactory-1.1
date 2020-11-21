@@ -3,8 +3,7 @@ package edu.pnu.stem;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.JAXBException;
-
+import edu.pnu.stem.binder.Marshaller;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 
@@ -52,7 +51,7 @@ public class testForCRUD extends TestCase{
 			
 			edu.pnu.stem.dao.CellSpaceDAO.updateCellSpace(map, "pf1", "c1", "room1", "bedroom", cg1, null, partialboundedby);
 			
-			edu.pnu.stem.binder.Mashaller.marshalDocument(null, Container.getDocument("test"));
+			Marshaller.marshalDocument(null, Container.getDocument("test"));
 			
 			edu.pnu.stem.dao.CellSpaceDAO.readCellSpace(map, "c1");
 			edu.pnu.stem.dao.CellSpaceDAO.deleteCellSpace(map,"c1");
@@ -61,10 +60,7 @@ public class testForCRUD extends TestCase{
 			//edu.pnu.stem.binder.Mashaller.marshalIndoorFeatures(null, Convert2JaxbClass.change2JaxbClass(map,savedDoc));
 			
 
-		 } catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
+		 } catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

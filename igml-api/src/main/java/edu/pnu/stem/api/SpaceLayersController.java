@@ -26,76 +26,68 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import edu.pnu.stem.api.exception.UndefinedDocumentException;
 import edu.pnu.stem.binder.Convert2Json;
 import edu.pnu.stem.binder.IndoorGMLMap;
-import edu.pnu.stem.dao.SpaceLayerDAO;
-import edu.pnu.stem.feature.core.SpaceLayer;
+import edu.pnu.stem.dao.SpaceLayersDAO;
+import edu.pnu.stem.feature.core.SpaceLayers;
 
 /**
  * @author Hyung-Gyu Ryoo (hyunggyu.ryoo@gmail.com, Pusan National University)
  *
  */
 @RestController
-@RequestMapping("/documents/{docId}/spacelayer")
-public class SpaceLayerController {
-	
+@RequestMapping("/documents/{docId}/spacelayers")
+public class SpaceLayersController {
+
 	@PostMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createSpaceLayer(@PathVariable("docId") String docId, @PathVariable("id") String id,
-								 @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
-		String parentId 	= json.get("parentId").asText().trim();
-		String name 		= null;
-		String description 	= null;
-		List<String> edges 	= null;
-		List<String> nodes 	= null;
+	public void createSpaceLayers(@PathVariable("docId") String docId, @PathVariable("id") String id,
+								  @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
+		String parentId 				= json.get("parentId").asText().trim();
+		String name 					= null;
+		String description 				= null;
+		List<String> spaceLayerMember 	= null;
 		
 		if(id == null || id.isEmpty()) {
 			id = UUID.randomUUID().toString();
 		}
-
-		if(json.has("properties")) {
+		
+		if(json.has("properties")){
 			if(json.get("properties").has("name")) {
 				name = json.get("properties").get("name").asText().trim();
 			}
 			if(json.get("properties").has("description")) {
 				description = json.get("properties").get("description").asText().trim();
 			}
-			if(json.get("properties").has("edges")){
-				edges = new ArrayList<>();
-				JsonNode partialBoundedByList = json.get("properties").get("edges");
+			if(json.get("properties").has("spaceLayerMember")){
+				spaceLayerMember = new ArrayList<>();
+				JsonNode partialBoundedByList = json.get("properties").get("spaceLayerMember");
 				for(int i = 0 ; i < partialBoundedByList.size() ; i++){
-					edges.add(partialBoundedByList.get(i).asText().trim());
-				}
-			}
-			if(json.get("properties").has("nodes")){
-				nodes = new ArrayList<>();
-				JsonNode partialBoundedByList = json.get("properties").get("nodes");
-				for(int i = 0 ; i < partialBoundedByList.size() ; i++){
-					nodes.add(partialBoundedByList.get(i).asText().trim());
+					spaceLayerMember.add(partialBoundedByList.get(i).asText().trim());
 				}
 			}
 		}
-		
-		SpaceLayer sl;
+
+		SpaceLayers sls;
 		try {
 			IndoorGMLMap map = Container.getDocument(docId);
-			sl = SpaceLayerDAO.createSpaceLayer(map, parentId, id, name, description, nodes, edges);
+			sls = SpaceLayersDAO.createSpaceLayers(map, parentId, id, name, description, spaceLayerMember);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 			throw new UndefinedDocumentException();
 		}
 
-		response.setHeader("Location", request.getRequestURL().append(sl.getId()).toString());
+		response.setHeader("Location", request.getRequestURL().append(sls.getId()).toString());
 	}
+
 	@PutMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.ACCEPTED)
-	public void updateSpaceLayer(@PathVariable("docId") String docId, @PathVariable("id") String id,
-								 @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
+	public void updateSpaceLayers(@PathVariable("docId") String docId, @PathVariable("id") String id,
+								  @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			IndoorGMLMap map 	= Container.getDocument(docId);
-			String parentId 	= null;
-			String name 		= null;
-			String description 	= null;
-			List<String> edges 	= null;
-			List<String> nodes 	= null;
+			IndoorGMLMap map 				= Container.getDocument(docId);
+			String parentId 				= null;
+			String name 					= null;
+			String description 				= null;
+			List<String> spaceLayerMember 	= null;
 			
 			if(json.has("parentId")) {
 				parentId = json.get("parentId").asText().trim();
@@ -108,23 +100,16 @@ public class SpaceLayerController {
 				if(json.get("properties").has("description")) {
 					description = json.get("properties").get("description").asText().trim();
 				}
-				if(json.get("properties").has("edges")){
-					edges = new ArrayList<>();
-					JsonNode partialBoundedByList = json.get("properties").get("edges");
+				if(json.get("properties").has("spaceLayerMember")){
+					spaceLayerMember = new ArrayList<>();
+					JsonNode partialBoundedByList = json.get("properties").get("spaceLayerMember");
 					for(int i = 0 ; i < partialBoundedByList.size() ; i++){
-						edges.add(partialBoundedByList.get(i).asText().trim());
-					}
-				}
-				if(json.get("properties").has("nodes")){
-					nodes = new ArrayList<>();
-					JsonNode partialBoundedByList = json.get("properties").get("nodes");
-					for(int i = 0 ; i < partialBoundedByList.size() ; i++){
-						nodes.add(partialBoundedByList.get(i).asText().trim());
+						spaceLayerMember.add(partialBoundedByList.get(i).asText().trim());
 					}
 				}
 			}
 			
-			SpaceLayerDAO.updateSpaceLayer(map, parentId, id, name, description, nodes, edges);
+			SpaceLayersDAO.updateSpaceLayers(map, parentId, id, name, description, spaceLayerMember);
 		}
 		catch(NullPointerException e) {
 			e.printStackTrace();
@@ -134,30 +119,32 @@ public class SpaceLayerController {
 
 	@GetMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.FOUND)
-	public void getCellSpaceBoundary(@PathVariable("docId") String docId, @PathVariable("id") String id,
-									 HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void getSpaceLayers(@PathVariable("docId") String docId, @PathVariable("id") String id,
+							   HttpServletRequest request, HttpServletResponse response) throws IOException {
 		try {
 			IndoorGMLMap map = Container.getDocument(docId);
 			assert map != null;
-			ObjectNode target = Convert2Json.convert2JSON(map,SpaceLayerDAO.readSpaceLayer(map, id));
+			ObjectNode target = Convert2Json.convert2JSON(map, SpaceLayersDAO.readSpaceLayers(map, id));
 
 			response.setContentType("application/json;charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.print(target);
-			out.flush();
+			out.flush();			
+			
 		}catch(NullPointerException e) {
 			e.printStackTrace();
 			throw new UndefinedDocumentException();
 		}
 	}
+
 	@DeleteMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteSpaceLayer(@PathVariable("docId") String docId, @PathVariable("id") String id,
-								 @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
+	public void deleteSpaceLayers(@PathVariable("docId") String docId, @PathVariable("id") String id,
+								  @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			IndoorGMLMap map = Container.getDocument(docId);
 			assert map != null;
-			SpaceLayerDAO.deleteSpaceLayer(map, id);
+			SpaceLayersDAO.deleteSpaceLayers(map, id);
 		}
 		catch(NullPointerException e) {
 			e.printStackTrace();

@@ -46,7 +46,7 @@ public class CellSpaceBoundaryDAO {
 			}
 		}
 
-		List<CellSpaceBoundary> cellSpaceBoundaryMember = new ArrayList<CellSpaceBoundary>();
+		List<CellSpaceBoundary> cellSpaceBoundaryMember = new ArrayList<>();
 		cellSpaceBoundaryMember.add(newFeature);
 		parent.setCellSpaceBoundaryMember(cellSpaceBoundaryMember);
 		newFeature.setParent(parent);
@@ -93,7 +93,7 @@ public class CellSpaceBoundaryDAO {
 			id = UUID.randomUUID().toString();
 		}
 
-		CellSpaceBoundary newFeature = new CellSpaceBoundary(map, id);;
+		CellSpaceBoundary newFeature = new CellSpaceBoundary(map, id);
 
 		if (map.hasFutureID(id)) {
 			newFeature = (CellSpaceBoundary) map.getFutureFeature(id);
@@ -175,7 +175,7 @@ public class CellSpaceBoundaryDAO {
 		}
 		
 		if(duality == null) {
-			Transition d = (Transition) target.getDuality();
+			Transition d = target.getDuality();
 			if(d != null)
 				d.resetDuality();
 		}
@@ -205,8 +205,7 @@ public class CellSpaceBoundaryDAO {
 			Transition duality = target.getDuality();
 			duality.resetDuality();
 		}
-		
-		//cellspace 찾아가서 partialboundedby 해제
+
 		 CellSpace cellspaceForPartialBoundedBy = target.getCellSpace();
 		 cellspaceForPartialBoundedBy.deletePartialBoundedBy(target);
 		

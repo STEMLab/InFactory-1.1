@@ -27,26 +27,26 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import edu.pnu.stem.api.exception.UndefinedDocumentException;
 import edu.pnu.stem.binder.Convert2Json;
 import edu.pnu.stem.binder.IndoorGMLMap;
-
-import edu.pnu.stem.dao.ConnectionBoundaryDAO;
+import edu.pnu.stem.dao.AnchorBoundaryDAO;
+import edu.pnu.stem.dao.CellSpaceBoundaryDAO;
 import edu.pnu.stem.feature.core.CellSpaceBoundary;
 
 @RestController
-@RequestMapping("documents/{docId}/connectionboundary")
-public class ConnectionBoundaryController {
+@RequestMapping("documents/{docId}/anchorboundary")
+public class AnchorBoundaryController {
 
 	@PostMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createConnectionBoundary(@PathVariable("docId") String docId, @PathVariable("id") String id,
-										 @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
-		final ObjectMapper mapper 	= new ObjectMapper();
-		String parentId 			= json.get("parentId").asText().trim();
-		String duality 				= null;
-		String name 				= null;
-		String description 			= null;
-		String geomFormatType 		= "GEOJSON";
-		String geom 				= json.get("geometry").asText().trim();
-		Geometry geometry 			= null;
+	public void createAnchorBoundary(@PathVariable("docId") String docId, @PathVariable("id") String id,
+									 @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
+		final ObjectMapper mapper = new ObjectMapper();
+		String parentId 		= json.get("parentId").asText().trim();
+		String duality 			= null;
+		String name 			= null;
+		String description 		= null;
+		String geomFormatType 	= "GEOJSON";
+		String geom 			= json.get("geometry").asText().trim();
+		Geometry geometry 		= null;
 
 		if (id == null || id.isEmpty()) {
 			id = UUID.randomUUID().toString();
@@ -83,14 +83,14 @@ public class ConnectionBoundaryController {
 		try {
 			IndoorGMLMap map = Container.getDocument(docId);
 			/*
-			 if(geomFormatType.equals("GEOJSON")){
-			 	c = CellSpaceBoundaryDAO.createCellSpaceBoundary(map, parentId, id, geometry, duality);
-			 }
-			 else if(geomFormatType.equals("WKT")){
-			 	c = CellSpaceBoundaryDAO.createCellSpaceBoundary(map, parentId, id, geom, duality);
-			 }
-			 */
-			c = ConnectionBoundaryDAO.createConnectionBoundary(map, parentId, id, name, description, geometry, duality);
+			if(geomFormatType.equals("GEOJSON")){
+				c = CellSpaceBoundaryDAO.createCellSpaceBoundary(map, parentId, id, geometry, duality);
+			}
+			else if(geomFormatType.equals("WKT")){
+				c = CellSpaceBoundaryDAO.createCellSpaceBoundary(map, parentId, id, geom, duality);
+			}
+			*/
+			c = AnchorBoundaryDAO.createAnchorBoundary(map, parentId, id, name, description, geometry, duality);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 			throw new UndefinedDocumentException();
@@ -100,20 +100,21 @@ public class ConnectionBoundaryController {
 
 	@PutMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.ACCEPTED)
-	public void updateConnectionBoundary(@PathVariable("docId") String docId, @PathVariable("id") String id,
-										 @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
+	public void updateAnchorBoundary(@PathVariable("docId") String docId, @PathVariable("id") String id,
+									 @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			IndoorGMLMap map 	= Container.getDocument(docId);
 			String duality 		= null;
-			String name 		= null;
-			String description 	= null;
-			JsonNode geometry;
+			JsonNode geometry 	= null;
 			Geometry geom 		= null;
 			String parentId 	= null;
+			String name 		= null;
+			String description 	= null;
 
 			if (json.has("parentId")) {
 				parentId = json.get("parentId").asText().trim();
 			}
+
 			if (json.has("duality")) {
 				duality = json.get("duality").asText().trim();
 			}
@@ -133,7 +134,7 @@ public class ConnectionBoundaryController {
 				geom = Convert2Json.json2Geometry(geometry);
 			}
 
-			ConnectionBoundaryDAO.updateConnectionBoundary(map, parentId, id, name, description, geom, duality);
+			CellSpaceBoundaryDAO.updateCellSpaceBoundary(map, parentId, id, name, description, geom, duality);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 			throw new UndefinedDocumentException();
@@ -142,11 +143,11 @@ public class ConnectionBoundaryController {
 
 	@GetMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.FOUND)
-	public void getConnectionBoundary(@PathVariable("docId") String docId, @PathVariable("id") String id,
-									  HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void getAnchorBoundary(@PathVariable("docId") String docId, @PathVariable("id") String id,
+								  HttpServletRequest request, HttpServletResponse response) throws IOException {
 		try {
-			IndoorGMLMap map 	= Container.getDocument(docId);
-			ObjectNode target 	= Convert2Json.convert2JSON(map, ConnectionBoundaryDAO.readConnectionBoundary(map, id));
+			IndoorGMLMap map = Container.getDocument(docId);
+			ObjectNode target = Convert2Json.convert2JSON(map, AnchorBoundaryDAO.readAnchorBoundary(map, id));
 
 			response.setContentType("application/json;charset=UTF-8");
 			PrintWriter out = response.getWriter();
@@ -160,12 +161,12 @@ public class ConnectionBoundaryController {
 
 	@DeleteMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteConnectionBoundary(@PathVariable("docId") String docId, @PathVariable("id") String id,
-										 @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
+	public void deleteAnchorBoundary(@PathVariable("docId") String docId, @PathVariable("id") String id,
+									 @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			IndoorGMLMap map = Container.getDocument(docId);
 			assert map != null;
-			ConnectionBoundaryDAO.deleteConnectionBoundary(map, id);
+			CellSpaceBoundaryDAO.deleteCellSpaceBoundary(map, id);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 			throw new UndefinedDocumentException();

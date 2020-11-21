@@ -15,7 +15,6 @@ import edu.pnu.stem.feature.core.PrimalSpaceFeatures;
 import edu.pnu.stem.feature.core.Transition;
 
 import edu.pnu.stem.feature.navigation.ConnectionBoundary;
-import edu.pnu.stem.feature.navigation.NavigableBoundary;
 
 import edu.pnu.stem.geometry.jts.WKTReader3D;
 
@@ -46,7 +45,7 @@ public class ConnectionBoundaryDAO {
 			}
 		}
 
-		List<CellSpaceBoundary> cellSpaceBoundaryMember = new ArrayList<CellSpaceBoundary>();
+		List<CellSpaceBoundary> cellSpaceBoundaryMember = new ArrayList<>();
 		cellSpaceBoundaryMember.add(newFeature);
 		parent.setCellSpaceBoundaryMember(cellSpaceBoundaryMember);
 		newFeature.setParent(parent);
@@ -174,7 +173,7 @@ public class ConnectionBoundaryDAO {
 		}
 
 		if (duality == null) {
-			Transition d = (Transition) target.getDuality();
+			Transition d = target.getDuality();
 			if (d != null)
 				d.resetDuality();
 		} else {
@@ -205,7 +204,6 @@ public class ConnectionBoundaryDAO {
 			duality.resetDuality();
 		}
 
-		// cellspace 찾아가서 partialboundedby 해제
 		CellSpace cellspaceForPartialBoundedBy = target.getCellSpace();
 		cellspaceForPartialBoundedBy.deletePartialBoundedBy(target);
 

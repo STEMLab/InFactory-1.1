@@ -1,14 +1,12 @@
 package edu.pnu.stem.dao;
-import java.util.ArrayList;
-import java.util.List;
 
 import edu.pnu.stem.binder.IndoorGMLMap;
-import edu.pnu.stem.feature.core.CellSpace;
 import edu.pnu.stem.feature.core.InterEdges;
 import edu.pnu.stem.feature.core.InterLayerConnection;
 import edu.pnu.stem.feature.core.SpaceLayer;
 import edu.pnu.stem.feature.core.State;
 import edu.pnu.stem.feature.core.typeOfTopoExpressionCode;
+
 public class InterLayerConnectionDAO {
 
 	public static InterLayerConnection createInterLayerConnection(IndoorGMLMap map, String parentId, String id, String name, String description, String typeOfTopoExpression, String comment, String[] interConnects, String[] connectedLayers){
@@ -58,16 +56,16 @@ public class InterLayerConnectionDAO {
 		if(interConnects.length == 2 && connectedLayers.length == 2){
 			State[] tempInterLayerConnectionList = new State[2];
 			tempInterLayerConnectionList[0] = new State(map, interConnects[0]);
-			System.out.println("create inter 0: "+interConnects[0].toString());
+			System.out.println("create inter 0: "+ interConnects[0]);
 			tempInterLayerConnectionList[1] = new State(map, interConnects[1]);
-			System.out.println("create inter 1: "+interConnects[1].toString());
+			System.out.println("create inter 1: "+ interConnects[1]);
 			newFeature.setInterConnects(tempInterLayerConnectionList);
 			
 			SpaceLayer[] tempConnectedLayers = new SpaceLayer[2];
 			tempConnectedLayers[0] = new SpaceLayer(map, connectedLayers[0]);
-			System.out.println("create connectedLayers 0: "+connectedLayers[0].toString());
+			System.out.println("create connectedLayers 0: "+ connectedLayers[0]);
 			tempConnectedLayers[1] = new SpaceLayer(map, connectedLayers[1]);
-			System.out.println("create connectedLayers 1: "+connectedLayers[1].toString());
+			System.out.println("create connectedLayers 1: "+ connectedLayers[1]);
 			newFeature.setConnectedLayers(tempConnectedLayers);
 		}
 		else{
@@ -119,10 +117,9 @@ public class InterLayerConnectionDAO {
 		}
 		
 		if(typeOfTopoExpression!= null){
-			typeOfTopoExpressionCode ttCode = null;
+			typeOfTopoExpressionCode ttCode = new typeOfTopoExpressionCode();
 			ttCode.type = typeOfTopoExpressionCode.Type.valueOf(typeOfTopoExpression);
 			result.setTypeOfTopoExpression(ttCode);
-			
 		}
 		if(comment != null){
 			result.setComment(comment);			

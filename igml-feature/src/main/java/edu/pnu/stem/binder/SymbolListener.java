@@ -1,16 +1,15 @@
 package edu.pnu.stem.binder;
 
-
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-
+import javax.xml.bind.Unmarshaller.Listener;
 /**
  * Listener for constructing symbol table
  * @author hgryoo
  *
  */
-public class SymbolListener extends javax.xml.bind.Unmarshaller.Listener {
+public class SymbolListener extends Listener {
 	
 	private Map<String, Object> idRegistryMap;
 	private Map<Object, Object> parentMap;
@@ -25,26 +24,22 @@ public class SymbolListener extends javax.xml.bind.Unmarshaller.Listener {
 	 * 
 	 */
 	public SymbolListener(Class<?> abstractGMLType) {
-		this.idRegistryMap = new HashMap<String, Object>();
-		this.parentMap = new HashMap<Object, Object>();
-		this.referenceRegistryMap = new HashMap<String, Object>();
-		this._GMLType = abstractGMLType;
+		this.idRegistryMap 		  = new HashMap<>();
+		this.parentMap 			  = new HashMap<>();
+		this.referenceRegistryMap = new HashMap<>();
+		this._GMLType 			  = abstractGMLType;
 	}
 
 	@Override
 	public void afterUnmarshal(Object target, Object parent) {
 		try {
-			Method getHref = target.getClass().getMethod("getHref", null);
-			String href = (String) getHref.invoke(target, null);
+			Method getHref = target.getClass().getMethod("getHref", (Class<?>) null);
+			String href = (String) getHref.invoke(target, (Object) null);
 			if(href != null) {
 				href = href.replaceAll("#", "");
-				/*System.out.println("XLink : " + href);*/
-				
-
+				//System.out.println("XLink : " + href);
 				//System.out.println("xlink target : " + target.getClass());
-				
 				referenceRegistryMap.put(href, target);
-				
 			}
 		} catch ( Exception e ) {
 			//e.printStackTrace();
@@ -61,20 +56,18 @@ public class SymbolListener extends javax.xml.bind.Unmarshaller.Listener {
 				}
 			}
 			*/
-
 			if(_GMLType.isAssignableFrom(target.getClass())) {
 				Method idMethod = _GMLType.getMethod("getId", null);
 				String gmlId = (String) idMethod.invoke(target, null);
 				if( gmlId != null ) {
 					idRegistryMap.put(gmlId, target);
 					parentMap.put(target, parent);
-					/*System.out.println("GMLID : " + gmlId);*/
-					
+					//System.out.println("GMLID : " + gmlId);
 					//System.out.println("gml target : " + target.getClass());
 				}
 			}
 		} catch( Exception e ) {
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 	

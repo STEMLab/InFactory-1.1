@@ -509,8 +509,6 @@ public class WKTWriter3D {
 	 * Converts a <code>LineString</code> to &lt;LineString Text&gt; format, then
 	 * appends it to the writer.
 	 *
-	 * @param lineString
-	 *            the <code>LineString</code> to process
 	 * @param writer
 	 *            the output writer to append to
 	 */

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package edu.pnu.stem.api.config;
 
 import org.springframework.context.annotation.Bean;
@@ -32,7 +29,4 @@ public class AppConfig implements WebMvcConfigurer{
 		.allowedOrigins("*")
 		.allowedHeaders("*");
 	}
-	
-	
-	
 }

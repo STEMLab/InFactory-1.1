@@ -49,7 +49,7 @@ public class TransitionDAO {
 		
 		List<Transition>tm = parent.getTransitionMember();
 		if(tm == null)
-			tm = new ArrayList<Transition>();
+			tm = new ArrayList<>();
 		
 		tm.add(newFeature);
 		parent.setTransitionMembers(tm);
@@ -164,9 +164,9 @@ public class TransitionDAO {
 				parent = new Edges(map,parentId);
 			}			
 		}
-		List<Transition>tm = parent.getTransitionMember();
+		List<Transition> tm = parent.getTransitionMember();
 		if(tm == null)
-			tm = new ArrayList<Transition>();
+			tm = new ArrayList<>();
 		
 		tm.add(newFeature);
 		parent.setTransitionMembers(tm);
@@ -261,7 +261,8 @@ public class TransitionDAO {
 		if(target == null) {
 			//TODO : throw error
 		}
-		
+
+		assert target != null;
 		Edges parent = target.getParent();
 		if(!parent.getId().equals(parentId)) {
 			parent.deleteTransitionMember(target);
@@ -286,7 +287,7 @@ public class TransitionDAO {
 		}
 		
 		if(duality == null) {
-			CellSpaceBoundary d = (CellSpaceBoundary) target.getDuality();
+			CellSpaceBoundary d = target.getDuality();
 			if(d != null)
 				d.resetDuality();
 		}
@@ -304,7 +305,7 @@ public class TransitionDAO {
 		}
 		
 		if(connects != null) {
-			List<State>cnts = new ArrayList<State>();
+			List<State>cnts = new ArrayList<>();
 			
 			for(String s : connects) {
 				State temp = new State(map,s);

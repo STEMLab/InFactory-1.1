@@ -2,11 +2,26 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
+	<artifactId>feature</artifactId>
+	<parent>
+		<groupId>edu.pnu.stem.igml</groupId>
+		<artifactId>indoorgml-factory</artifactId>
+		<version>0.1.0</version>
+	</parent>
 	<!-- =========================================================== -->
 	<!-- Developers and Contributors -->
 	<!-- =========================================================== -->
 	<developers>
+		<developer>
+			<id>TaehoonK</id>
+			<name>Taehoon Kim</name>
+			<email>kim.taehoon@pnu.edu</email>
+			<organization>Pusan National University</organization>
+			<roles>
+				<role>Module Maintainer</role>
+				<role>Java Developer</role>
+			</roles>
+		</developer>
 		<developer>
 			<id>hgryoo</id>
 			<name>Hyung-Gyu Ryoo</name>
@@ -29,40 +44,40 @@
 		</developer>
 	</developers>
 
-	<parent>
-		<groupId>edu.pnu.stem.igml</groupId>
-		<artifactId>indoorgml-factory</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
-	<artifactId>feature</artifactId>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+
 	<dependencies>
+		<!-- ======================================================= -->
+		<!-- JAXB and OGC Schema -->
+		<!-- ======================================================= -->
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
-			<version>2.2.11</version>
+			<version>${jaxb-api.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
 			<artifactId>jaxb-core</artifactId>
-			<version>2.2.11</version>
+			<version>${jaxb-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
 			<artifactId>jaxb-impl</artifactId>
-			<version>2.2.11</version>
+			<version>${jaxb-core.version}</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.jvnet.ogc/gml-v_3_2_1 -->
 		<dependency>
 			<groupId>org.jvnet.jaxb2_commons</groupId>
 			<artifactId>jaxb2-basics-runtime</artifactId>
-			<version>0.11.1</version>
+			<version>1.11.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jvnet.ogc</groupId>
 			<artifactId>gml-v_3_2_1</artifactId>
 			<version>2.6.1</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.jvnet.ogc</groupId>
 			<artifactId>indoorgml-v_1_0</artifactId>
@@ -75,7 +90,6 @@
 			<artifactId>jts-core</artifactId>
 			<version>${jts.version}</version>
 		</dependency>
-
 		<!-- ======================================================= -->
 		<!-- Spring and Jetty -->
 		<!-- ======================================================= -->
@@ -89,14 +103,13 @@
 			<artifactId>jetty-server</artifactId>
 			<version>${jetty.version}</version>
 		</dependency>
-
 		<!-- ======================================================= -->
 		<!-- Test -->
 		<!-- ======================================================= -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -116,7 +129,12 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
-			<version>2.9.3</version>
+			<version>${fasterxml.jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${fasterxml.jackson.version}</version>
 		</dependency>
 	</dependencies>
 </project>

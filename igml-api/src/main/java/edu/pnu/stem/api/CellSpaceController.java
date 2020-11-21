@@ -1,6 +1,3 @@
-/**
- * 
- */
 package edu.pnu.stem.api;
 
 import java.io.IOException;
@@ -13,8 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.locationtech.jts.geom.Geometry;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,28 +40,22 @@ import edu.pnu.stem.feature.core.CellSpace;
 @RequestMapping("/documents/{docId}/cellspace")
 public class CellSpaceController {
 	
-	@Autowired
-    private ApplicationContext applicationContext;
-	
 	@PostMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createCellSpace(@PathVariable("id") String id, @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		
-		String docId = json.get("docId").asText().trim();
-		String parentId = json.get("parentId").asText().trim();
-		String name = null; 
-		String description = null;
-		
-		String geomFormatType = "GEOJSON";
-		final ObjectMapper mapper = new ObjectMapper();
-				
-		String geom = json.get("geometry").asText().trim();
-		String duality = null;
-		Geometry cellGeometry = null;
-		JsonNode geometry = null;
-		
+	public void createCellSpace(@PathVariable("id") String id, @RequestBody ObjectNode json,
+								HttpServletRequest request, HttpServletResponse response) {
+		final ObjectMapper mapper 	= new ObjectMapper();
+		String docId 				= json.get("docId").asText().trim();
+		String parentId 			= json.get("parentId").asText().trim();
+		String name 				= null;
+		String description 			= null;
+		String geomFormatType 		= "GEOJSON";
+		String geom 				= json.get("geometry").asText().trim();
+		String duality 				= null;
+		Geometry cellGeometry 		= null;
+		JsonNode geometry;
 		List<String> partialBoundedBy = null;
-		List<String> level = null;
+		List<String> level 			  = null;
 		
 		if(id == null || id.isEmpty()) {
 			id = UUID.randomUUID().toString();
@@ -90,18 +80,17 @@ public class CellSpaceController {
 				name = json.get("properties").get("name").asText().trim();
 			}
 			if(json.get("properties").has("level")) {
-				level = new ArrayList<String>();
+				level = new ArrayList<>();
 				JsonNode levelList = json.get("properties").get("level");
 				for(int i = 0 ; i < levelList.size() ; i++){
 					level.add(levelList.get(i).asText().trim());
-					
 				}				
 			}
 			if(json.get("properties").has("description")) {
 				description = json.get("properties").get("description").asText().trim();
 			}
 			if(json.get("properties").has("partialboundedBy")){
-				partialBoundedBy = new ArrayList<String>();
+				partialBoundedBy = new ArrayList<>();
 				JsonNode partialBoundedByList = json.get("properties").get("partialboundedBy");
 				for(int i = 0 ; i < partialBoundedByList.size() ; i++){
 					partialBoundedBy.add(partialBoundedByList.get(i).asText().trim());
@@ -113,28 +102,23 @@ public class CellSpaceController {
 			geometry = json.get("geometry");
 			cellGeometry = Convert2Json.json2Geometry(geometry);
 		}
-		
 
-		//TODO : 나중에 고치기!!
+		// TODO
 		//String properties = json.get("properties").asText().trim();
 		//String duality = null;
 
-		
-		CellSpace c = null;
+		CellSpace c;
 		try {
-			Container container = applicationContext.getBean(Container.class);
-			IndoorGMLMap map = container.getDocument(docId);
+			IndoorGMLMap map = Container.getDocument(docId);
 			/*
-			 * if(geomFormatType.equals("GEOJSON")){
+			if(geomFormatType.equals("GEOJSON")){
 				c = CellSpaceDAO.createCellSpace(map, parentId, id, geometry, duality);
 			}
 			else if(geomFormatType.equals("WKT")){
 				c = CellSpaceDAO.createCellSpace(map, parentId, id, geom, duality);
 			}
-			 * */
-			
+			*/
 			c = CellSpaceDAO.createCellSpace(map, parentId, id, name, description, cellGeometry, duality, level, partialBoundedBy);
-			
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 			throw new UndefinedDocumentException();
@@ -144,17 +128,16 @@ public class CellSpaceController {
 	
 	@GetMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.FOUND)
-	public void getCellSpace(@PathVariable("docId") String docId,@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void getCellSpace(@PathVariable("docId") String docId, @PathVariable("id") String id,
+							 HttpServletRequest request, HttpServletResponse response) throws IOException {
 		try {
-			Container container = applicationContext.getBean(Container.class);
-			IndoorGMLMap map = container.getDocument(docId);
-			
-			ObjectNode target = Convert2Json.convert2JSON(map, CellSpaceDAO.readCellSpace(map, id));
+			IndoorGMLMap map 	= Container.getDocument(docId);
+			ObjectNode target 	= Convert2Json.convert2JSON(map, CellSpaceDAO.readCellSpace(map, id));
+
 			response.setContentType("application/json;charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.print(target);
-			out.flush();			
-			
+			out.flush();
 		}catch(NullPointerException e) {
 			e.printStackTrace();
 			throw new UndefinedDocumentException();
@@ -163,51 +146,40 @@ public class CellSpaceController {
 	
 	@PutMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.ACCEPTED)
-	public void updateCellSpace(@PathVariable("docId") String docId,@PathVariable("id") String id, @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
+	public void updateCellSpace(@PathVariable("docId") String docId, @PathVariable("id") String id,
+								@RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			Container container = applicationContext.getBean(Container.class);
-			IndoorGMLMap map = container.getDocument(docId);
-			String duality = null;
-			JsonNode geometry = null;
+			IndoorGMLMap map 	= Container.getDocument(docId);
+			String duality 		= null;
+			JsonNode geometry;
 			List<String> partialBoundedBy = null;
-			Geometry geom = null;
-			String parentId = null;
+			Geometry geom 		= null;
+			String parentId 	= null;
 			
 			if(json.has("parentId")) {
 				parentId = json.get("parentId").asText().trim();
 			}
-			
 			if(json.has("duality")){
-				
 				duality = json.get("duality").asText().trim();
-				
 			}
 			if(json.has("properties")){
 				if(json.get("properties").has("duality")){
 					duality = json.get("properties").get("duality").asText().trim();					
-				}				
-			}
-			if(json.has("geometry")) {
-				geometry = json.get("geometry");
-				geom = Convert2Json.json2Geometry(geometry);			
-			}
-			
-			//TODO : 나중에 고치기!!
-			//String properties = json.get("properties").asText().trim();
-			//String duality = null;
-			
-			if(json.has("properties")){
+				}
 				if(json.get("properties").has("partialboundedBy")){
-					partialBoundedBy = new ArrayList<String>();
+					partialBoundedBy = new ArrayList<>();
 					JsonNode partialBoundedByList = json.get("properties").get("partialboundedBy");
 					for(int i = 0 ; i < partialBoundedByList.size() ; i++){
 						partialBoundedBy.add(partialBoundedByList.get(i).asText().trim());
 					}
 				}
 			}
-			
-		CellSpaceDAO.updateCellSpace(map, parentId, id, null, null, geom, duality, partialBoundedBy );
-			
+			if(json.has("geometry")) {
+				geometry = json.get("geometry");
+				geom = Convert2Json.json2Geometry(geometry);			
+			}
+
+			CellSpaceDAO.updateCellSpace(map, parentId, id, null, null, geom, duality, partialBoundedBy );
 		}
 		catch(NullPointerException e) {
 			e.printStackTrace();
@@ -217,10 +189,11 @@ public class CellSpaceController {
 	
 	@DeleteMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteCellSpace(@PathVariable("docId") String docId,@PathVariable("id") String id, @RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
+	public void deleteCellSpace(@PathVariable("docId") String docId, @PathVariable("id") String id,
+								@RequestBody ObjectNode json, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			Container container = applicationContext.getBean(Container.class);
-			IndoorGMLMap map = container.getDocument(docId);			
+			IndoorGMLMap map = Container.getDocument(docId);
+			assert map != null;
 			CellSpaceDAO.deleteCellSpace(map, id);
 		}
 		catch(NullPointerException e) {
@@ -228,6 +201,4 @@ public class CellSpaceController {
 			throw new UndefinedDocumentException();
 		}
 	}
-	
-	
 }
